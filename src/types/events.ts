@@ -10,6 +10,7 @@ export interface Event {
   banner_image: string | null
   gallery_images: string[] | null
   registration_link: string | null
+  slug: string | null
   is_featured: boolean
   is_published: boolean
   created_at: string

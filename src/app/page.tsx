@@ -33,9 +33,7 @@ import {
   MessageCircle,
   Clock,
 } from "lucide-react"
-import { impactStats, testimonials } from "@/data/content"
-import { createClient as createSupabaseClient } from "@/lib/supabase/client"
-import { eventsApi } from "@/lib/api/events"
+import { impactStats, testimonials, blogPosts } from "@/data/content"
 import type { Event } from "@/types/events"
 import CountUp from "@/components/CountUp"
 import { cn } from "@/lib/utils"
@@ -126,13 +124,86 @@ interface HomeBlogItem {
 }
 
 export default function HomePage() {
+  // Static initial data for instant loading
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
   const [testimonialIndex, setTestimonialIndex] = useState(0)
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(new Array(heroSlides.length).fill(false))
-  const [featuredEvents, setFeaturedEvents] = useState<Event[]>([])
-  const [eventsLoading, setEventsLoading] = useState(true)
-  const [latestBlogs, setLatestBlogs] = useState<HomeBlogItem[]>([])
-  const [blogsLoading, setBlogsLoading] = useState(true)
+
+  // Use static data directly - FAST
+  const featuredEvents: Event[] = [
+    {
+      id: "1",
+      title: "Youth Leadership Summit 2024",
+      description: "Empowering the next generation of leaders.",
+      date: "2024-03-15",
+      time: "10:00 AM",
+      location: "Community Center, Dhaka",
+      chapter: "Bangladesh",
+      category: "Leadership",
+      banner_image: "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg",
+      gallery_images: [],
+      registration_link: null,
+      slug: "youth-summit-2024",
+      is_featured: true,
+      is_published: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    {
+      id: "2",
+      title: "Transportation Innovation Forum",
+      description: "Discussing sustainable transportation solutions.",
+      date: "2024-03-20",
+      time: "2:00 PM",
+      location: "Tech Hub, San Francisco",
+      chapter: "US",
+      category: "Innovation",
+      banner_image: "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg",
+      gallery_images: [],
+      registration_link: null,
+      slug: "transport-forum-2024",
+      is_featured: true,
+      is_published: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    {
+      id: "3",
+      title: "Green Schools Workshop",
+      description: "Strategies for zero-waste campuses.",
+      date: "2024-04-10",
+      time: "9:00 AM",
+      location: "Dhaka, Bangladesh",
+      chapter: "Bangladesh",
+      category: "Education",
+      banner_image: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg",
+      gallery_images: [],
+      registration_link: null,
+      slug: "green-schools-workshop",
+      is_featured: true,
+      is_published: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }
+  ]
+
+  // Use imported static blog posts
+  const latestBlogs: HomeBlogItem[] = blogPosts.map(post => ({
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt,
+    featured_image: post.image || null,
+    slug: post.id,
+    published_at: post.date,
+    created_at: new Date().toISOString(), // Mock
+    profiles: {
+      first_name: post.author.split(' ')[0],
+      last_name: post.author.split(' ').slice(1).join(' ')
+    }
+  }))
+
+  const [eventsLoading] = useState(false)
+  const [blogsLoading] = useState(false)
 
   // Preload images
   useEffect(() => {
@@ -149,7 +220,6 @@ export default function HomePage() {
             resolve()
           }
           img.onerror = () => {
-            console.error(`Failed to load image: ${slide.image}`)
             resolve()
           }
           img.src = slide.image
@@ -165,7 +235,7 @@ export default function HomePage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % heroSlides.length)
-    }, 8000) // Change slide every 8 seconds for ultra-smooth experience
+    }, 8000)
 
     return () => clearInterval(interval)
   }, [])
@@ -322,64 +392,6 @@ export default function HomePage() {
     },
   ]
 
-  useEffect(() => {
-    const loadFeaturedEvents = async () => {
-      try {
-        setEventsLoading(true)
-        const events = await eventsApi.getAll({ featured: true, limit: 3 })
-        events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        setFeaturedEvents(events)
-      } catch (error) {
-        console.error("[v0] Failed to load featured events:", error)
-        setFeaturedEvents([]) // Set empty array on error
-      } finally {
-        setEventsLoading(false)
-      }
-    }
-
-    loadFeaturedEvents()
-  }, [])
-
-  useEffect(() => {
-    const loadLatestBlogs = async () => {
-      try {
-        setBlogsLoading(true)
-        const supabase = createSupabaseClient()
-        const { data, error } = await supabase
-          .from("blogs")
-          .select(
-            `id,title,excerpt,featured_image,slug,published_at,created_at,profiles:profiles!blogs_author_id_fkey(first_name,last_name)`,
-          )
-          .eq("status", "approved")
-          .order("published_at", { ascending: false, nullsFirst: false })
-          .limit(3)
-
-        if (error) throw error
-        const normalized: HomeBlogItem[] = (data || []).map((row: any) => ({
-          id: row.id,
-          title: row.title,
-          excerpt: row.excerpt ?? null,
-          featured_image: row.featured_image ?? null,
-          slug: row.slug ?? null,
-          published_at: row.published_at ?? null,
-          created_at: row.created_at,
-          profiles: Array.isArray(row.profiles)
-            ? (row.profiles[0]
-              ? { first_name: row.profiles[0].first_name ?? null, last_name: row.profiles[0].last_name ?? null }
-              : null)
-            : row.profiles ?? null,
-        }))
-        setLatestBlogs(normalized)
-      } catch (err) {
-        console.error("[home] Failed to load latest blogs:", err)
-        setLatestBlogs([])
-      } finally {
-        setBlogsLoading(false)
-      }
-    }
-
-    loadLatestBlogs()
-  }, [])
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
