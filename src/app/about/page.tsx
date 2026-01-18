@@ -95,7 +95,7 @@ export default function AboutPage() {
     "https://res.cloudinary.com/dj4f7f52a/image/upload/v1768731410/496026435_122135457596631699_7113958457378391658_n_omkp2i.jpg",
     "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1470&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1470&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop"
+
   ]
 
   return (
@@ -152,7 +152,7 @@ export default function AboutPage() {
               </div>
             </motion.div>
           ))}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
         </div>
 
         {/* Text over the slanted images */}
