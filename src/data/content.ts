@@ -87,6 +87,36 @@ export const testimonials: Testimonial[] = [
     author: "Principal",
     role: "Desh Kindergarten",
   },
+  {
+    quote:
+      "The leadership training provided by Acumen Haven empowered me to start my own local recycling initiative. It's amazing to see the difference we can make.",
+    author: "Sarah Johnson",
+    role: "Student Leader",
+  },
+  {
+    quote:
+      "I never thought I could have a voice in policy. Acumen Haven showed me that young people belong at the decision-making table.",
+    author: "David Chen",
+    role: "Youth Ambassador",
+  },
+  {
+    quote:
+      "Their 'Green Schools' program is not just educational; it's transformative. Our campus has reduced waste by 30% in just six months.",
+    author: "Elena Rodriguez",
+    role: "School Administrator",
+  },
+  {
+    quote:
+      "Joining the Climate Literacy Ambassadors was the best decision of my high school career. I've gained confidence, skills, and a network of friends.",
+    author: "Michael Thompson",
+    role: "Program Alumni",
+  },
+  {
+    quote:
+      "Acumen Haven bridges the gap between awareness and action. They gave our community the practical tools to tackle heatwaves and pollution.",
+    author: "Fatima Khan",
+    role: "Community Organizer",
+  },
 ]
 
 export const usPrograms: Program[] = [

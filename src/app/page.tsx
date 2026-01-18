@@ -514,7 +514,7 @@ export default function HomePage() {
           </div>
 
           {/* Masonry Grid Layout for Impact Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {impactStats.map((stat, index) => {
               let label
               if (stat.description.includes("Teachers trained in traffic awareness workshops")) {
@@ -548,11 +548,11 @@ export default function HomePage() {
               return (
                 <Card
                   key={index}
-                  className={`group relative p-6 rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 ${color.bg} overflow-hidden flex flex-col`}
+                  className={`group relative p-4 sm:p-6 rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 ${color.bg} overflow-hidden flex flex-col`}
                 >
                   <CardContent className="p-0 relative z-10 flex-grow flex flex-col">
-                    <div className="mb-6">
-                      <div className={`text-5xl lg:text-6xl font-black ${color.text} leading-none mb-2 group-hover:scale-105 transition-transform duration-500`}>
+                    <div className="mb-3 sm:mb-6">
+                      <div className={`text-3xl sm:text-5xl lg:text-6xl font-black ${color.text} leading-none mb-1 sm:mb-2 group-hover:scale-105 transition-transform duration-500`}>
                         <CountUp
                           from={0}
                           to={parseInt(stat.number.replace(/[^\d]/g, ''))}
@@ -562,9 +562,9 @@ export default function HomePage() {
                         />
                         {stat.number.includes('+') ? '+' : ''}
                       </div>
-                      <div className={`text-lg font-bold ${color.text} mb-4`}>{label}</div>
+                      <div className={`text-sm sm:text-lg font-bold ${color.text} mb-2 sm:mb-4 leading-tight`}>{label}</div>
                     </div>
-                    <p className="text-sm text-slate-600 leading-relaxed flex-grow">{stat.description}</p>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed flex-grow line-clamp-4">{stat.description}</p>
                   </CardContent>
                   {/* Bottom bar animation */}
                   <div
@@ -696,19 +696,19 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {sdgData.map((sdg, index) => (
                 <div
                   key={index}
-                  className={`overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-0 rounded-3xl ${sdg.bgColor} flex flex-col items-center justify-center p-6 shadow-lg text-center`}
+                  className={`overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-0 rounded-3xl ${sdg.bgColor} flex flex-col items-center justify-center p-3 sm:p-6 shadow-lg text-center h-full`}
                 >
                   <div
-                    className={`w-16 h-16 rounded-2xl ${sdg.iconColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg mx-auto`}
+                    className={`w-10 h-10 sm:w-16 sm:h-16 rounded-2xl ${sdg.iconColor} flex items-center justify-center mb-2 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg mx-auto`}
                   >
-                    <sdg.icon className="h-8 w-8 text-white" />
+                    <sdg.icon className="h-5 w-5 sm:h-8 sm:w-8 text-white" />
                   </div>
-                  <h3 className={`text-xl ${sdg.textColor} font-bold mb-2`}>{sdg.title}</h3>
-                  <p className="text-slate-700 text-sm leading-relaxed">{sdg.description}</p>
+                  <h3 className={`text-xs sm:text-xl ${sdg.textColor} font-bold mb-1 sm:mb-2 line-clamp-2 min-h-[2.5em] flex items-center`}>{sdg.title}</h3>
+                  <p className="text-slate-700 text-[10px] sm:text-sm leading-relaxed line-clamp-3 md:line-clamp-none">{sdg.description}</p>
                 </div>
               ))}
             </div>
@@ -905,131 +905,152 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-br from-slate-50 to-emerald-100">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 bg-slate-50 overflow-hidden relative">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-emerald-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center mb-16 animate-fade-in">
-            <Badge className="bg-emerald-100 text-emerald-800 rounded-full font-semibold mb-4 items-center space-x-2 backdrop-blur-sm px-4 py-2 md:px-6 md:py-3 border border-emerald-200/50 shadow-lg text-lg md:text-xl">
-              <TreePine className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-              Testimonials
-            </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">Voices of Change</h2>
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
-              Hear from the young leaders and educators who are making a difference through our programs.
+            <div className="inline-flex items-center space-x-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 mb-6 shadow-sm">
+              <TreePine className="h-4 w-4 text-emerald-600" />
+              <span className="text-sm font-medium text-slate-600 uppercase tracking-wider">Community Voices</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
+              Voices of <span className="text-emerald-600 relative">Change
+                <svg className="absolute w-full h-3 -bottom-1 left-0 text-emerald-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
+                </svg>
+              </span>
+            </h2>
+            <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Stories of impact and inspiration from the dedicated individuals driving our mission forward.
             </p>
           </div>
+        </div>
 
-          <div className="relative">
-            {canSlide && (
-              <>
-                <button
-                  onClick={prevTestimonial}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white shadow-xl rounded-full flex items-center justify-center text-slate-600 hover:text-primary-600 hover:shadow-2xl transition-all duration-300 hover:scale-110 hidden md:flex"
-                  aria-label="Previous testimonials"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={nextTestimonial}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white shadow-xl rounded-full flex items-center justify-center text-slate-600 hover:text-primary-600 hover:shadow-2xl transition-all duration-300 hover:scale-110 hidden md:flex"
-                  aria-label="Next testimonials"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-              </>
-            )}
+        {/* Infinite Scroll Carousel - Full Width */}
+        <div className="relative w-full overflow-hidden mask-linear-gradient mt-10 md:mt-16">
+          {/* Gradient Masks for Fade Effect */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-slate-50 to-transparent z-20 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-slate-50 to-transparent z-20 pointer-events-none"></div>
 
-            <div className={`grid gap-8 ${getGridClass()}`}>
-              {getVisibleTestimonials().map((testimonial, index) => (
-                <Card
-                  key={`${testimonialIndex}-${index}`}
-                  className="group relative p-8 rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white/80 backdrop-blur-sm overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-slate-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="absolute top-6 right-6 text-emerald-300 group-hover:text-emerald-500 transition-colors duration-500">
-                    <Quote className="h-16 w-16" fill="currentColor" />
+          <div className="flex animate-scroll hover:pause gap-8 py-4 w-max px-4">
+            {/* Render testimonials twice for seamless looping */}
+            {[...testimonials, ...testimonials].map((testimonial, index) => (
+              <div
+                key={`${index}`}
+                className="w-[300px] md:w-[450px] flex-shrink-0 group relative h-full"
+              >
+                <div className="h-full bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl hover:border-emerald-100 transition-all duration-500 flex flex-col relative overflow-hidden">
+
+                  {/* Decorative Quote Icon Background */}
+                  <div className="absolute top-6 right-8 text-slate-50 group-hover:text-emerald-50/50 transition-colors duration-500">
+                    <Quote className="h-24 w-24 rotate-12 scale-150 transform origin-top-right" fill="currentColor" />
                   </div>
-                  <CardContent className="p-0 space-y-6 relative z-10">
-                    <blockquote className="text-slate-700 leading-relaxed text-lg font-light italic pr-12">
+
+                  {/* Content */}
+                  <div className="relative z-10 flex-grow">
+                    <div className="flex space-x-1 mb-6">
+                      {[...Array(5)].map((_, i) => (
+                        <div key={i} className="text-amber-400">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                            <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      ))}
+                    </div>
+
+                    <blockquote className="text-lg md:text-xl text-slate-700 leading-relaxed font-medium mb-8 font-serif line-clamp-4 md:line-clamp-none">
                       "{testimonial.quote}"
                     </blockquote>
-                    <div className="flex items-center space-x-4 pt-4 border-t border-slate-100">
-                      <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center shadow-inner">
-                        <User className="h-7 w-7 text-emerald-600" />
+                  </div>
+
+                  {/* Author Section */}
+                  <div className="relative z-10 pt-6 mt-auto border-t border-slate-50">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <div className="w-16 h-16 rounded-full bg-slate-100 overflow-hidden ring-2 ring-emerald-50 group-hover:ring-emerald-200 transition-all flex items-center justify-center">
+                          <span className="text-2xl font-bold text-emerald-700">
+                            {testimonial.author.charAt(0)}
+                          </span>
+                        </div>
+                        <div className="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-1.5 border-2 border-white">
+                          <Quote className="h-3 w-3 text-white" fill="currentColor" />
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-900 text-lg">{testimonial.author}</div>
-                        <div className="text-emerald-600 font-medium text-sm">{testimonial.role}</div>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        {[...Array(5)].map((_, i) => (
-                          <TreePine key={i} className="h-4 w-4 text-emerald-400 fill-current" />
-                        ))}
+                      <div>
+                        <h4 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                          {testimonial.author}
+                        </h4>
+                        <p className="text-sm text-slate-500 font-medium bg-slate-100 inline-block px-2 py-0.5 rounded-full mt-1">
+                          {testimonial.role}
+                        </p>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {canSlide && (
-              <div className="flex justify-center mt-8 space-x-2">
-                {Array.from({ length: maxPages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setTestimonialIndex(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${testimonialIndex === index ? "bg-primary-600 scale-110" : "bg-slate-300 hover:bg-slate-400"
-                      }`}
-                    aria-label={`Go to testimonial page ${index + 1}`}
-                  />
-                ))}
+                  </div>
+                </div>
               </div>
-            )}
+            ))}
           </div>
         </div>
+
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-r from-emerald-600 to-emerald-500 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float"></div>
-          <div
-            className="absolute bottom-10 left-10 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-float"
-            style={{ animationDelay: "-3s" }}
-          ></div>
+      <section className="relative py-24 px-4 sm:px-6 overflow-hidden">
+        {/* Professional Dark Background with Grid Pattern */}
+        <div className="absolute inset-0 bg-slate-900 border-t border-slate-800">
+          <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-emerald-500 opacity-20 blur-[100px]"></div>
         </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10 animate-fade-in">
-          <div className="space-y-8">
-            <Badge className="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold">
-              <Lightbulb className="h-4 w-4 mr-2" />
-              Join the Movement
-            </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-6">Ready to Make a Difference?</h2>
-            <p className="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of young changemakers who are already creating positive impact in their communities and
-              beyond.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button
-                size="lg"
-                className="bg-white text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group text-lg"
-                asChild
-              >
-                <Link href="/get-involved">
-                  Get Started Today
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 text-lg bg-transparent"
-                asChild
-              >
-                <Link href="/about">Learn More</Link>
-              </Button>
-            </div>
+        <div className="max-w-5xl mx-auto relative z-10 text-center animate-fade-in">
+          <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-4 py-2 rounded-full text-sm font-semibold mb-8 backdrop-blur-sm">
+            <Lightbulb className="h-4 w-4 mr-2" />
+            Join the Movement
+          </Badge>
+
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-8 tracking-tight leading-tight">
+            Ready to make a <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+              real difference?
+            </span>
+          </h2>
+
+          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed mb-12">
+            Join a global community of young changemakers transforming their ideas into impactful action. Your journey starts here.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+            <Button
+              size="lg"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-7 rounded-full font-bold shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.6)] transition-all duration-300 hover:scale-105 group text-lg min-w-[200px]"
+              asChild
+            >
+              <Link href="/get-involved">
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="lg"
+              className="text-slate-300 hover:text-white hover:bg-white/10 px-10 py-7 rounded-full font-semibold transition-all duration-300 text-lg min-w-[200px] border border-slate-700 hover:border-slate-600"
+              asChild
+            >
+              <Link href="/about">
+                Read Our Story
+              </Link>
+            </Button>
           </div>
+
+          {/* Social Proof Text */}
+          <p className="mt-10 text-sm text-slate-500 font-medium tracking-wide uppercase">
+            Trusted by communities across <span className="text-slate-400">Bangladesh</span> and the <span className="text-slate-400">US</span>
+          </p>
         </div>
       </section>
     </div>

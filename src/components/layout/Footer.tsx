@@ -1,8 +1,14 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, MapPin } from 'lucide-react'
 
 const Footer = () => {
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
+
   const socialLinks = [
     { icon: Facebook, href: "https://facebook.com/profile.php?id=61568950987067", label: "Facebook" },
     { icon: Twitter, href: "https://x.com/acumenhaven", label: "Twitter" },
@@ -11,39 +17,46 @@ const Footer = () => {
     { icon: Youtube, href: "https://www.youtube.com/@AcumenHaven", label: "YouTube" },
   ]
 
+  // Dynamic colors based on route
+  const maskColor = isHomePage ? "#0f172a" : "#ffffff" // Slate-900 vs White
+
+  // Wave colors: [Top/Back, Middle, Bottom/Front]
+  const waveColors = isHomePage
+    ? ["#064e3b", "#065f46", "#10b981"] // Deep Emerald -> Bright Emerald Accents
+    : ["#dcfce7", "#4ade80", "#166534"]
+
+  const waveOpacities = isHomePage
+    ? ["0.6", "0.8", "0.3"] // Higher opacity for dark mode richness
+    : ["0.5", "0.7", "0.85"]
+
   return (
-    <footer className="text-white relative overflow-hidden">
-      {/* Top Transition: White Page -> Wave Mountains */}
+    <footer className="text-white relative overflow-hidden" style={{ marginTop: "-2px" }}>
+      {/* Top Transition: Wave Mountains */}
       <div className="relative w-full overflow-hidden z-20" style={{ marginBottom: "-1px" }}>
         <svg
           className="relative block w-full h-[80px] md:h-[150px]"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
+          style={{ backgroundColor: maskColor, transition: "background-color 0.3s ease" }}
         >
-          {/* Mask for top section to match white website background */}
-          <path
-            d="M0,0 V20 C150,0 400,40 600,20 C800,0 1050,30 1200,10 V0 Z"
-            fill="white"
-          ></path>
-
-          {/* Artistic Wave Layers - transitioning into footer */}
+          {/* Artistic Wave Layers */}
           <path
             d="M0,40 C200,100 450,20 600,20 C750,20 1000,100 1200,40 L1200,120 L0,120 Z"
-            fill="#dcfce7"
-            opacity="0.5"
+            fill={waveColors[0]}
+            opacity={waveOpacities[0]}
           ></path>
 
           <path
             d="M0,60 C250,110 500,40 600,40 C700,40 950,110 1200,60 L1200,120 L0,120 Z"
-            fill="#4ade80"
-            opacity="0.7"
+            fill={waveColors[1]}
+            opacity={waveOpacities[1]}
           ></path>
 
           <path
             d="M0,80 C300,130 550,60 600,60 C650,60 900,130 1200,80 L1200,120 L0,120 Z"
-            fill="#166534"
-            opacity="0.85"
+            fill={waveColors[2]}
+            opacity={waveOpacities[2]}
           ></path>
 
           {/* Final layer matching the footer body color exactly (#1f1f22) */}

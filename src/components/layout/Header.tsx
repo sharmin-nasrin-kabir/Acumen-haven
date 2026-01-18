@@ -94,7 +94,7 @@ export default function Header() {
       {/* Main Navigation Bar */}
       <div className={cn(
         "max-w-[1600px] mx-auto px-4 sm:px-6 transition-all duration-500",
-        isTransparent ? "h-20 md:h-24" : "h-16 md:h-20"
+        isTransparent ? "h-16 md:h-20" : "h-14 md:h-16"
       )}>
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
@@ -103,12 +103,12 @@ export default function Header() {
               <Image
                 src="/AH-Logo-Name.png"
                 alt="Acumen Haven"
-                width={180}
-                height={40}
+                width={160}
+                height={36}
                 priority
                 className={cn(
                   "transition-all duration-500 group-hover:scale-105 h-auto",
-                  isTransparent ? "brightness-0 invert w-40 md:w-48" : "brightness-100 invert-0 w-36 md:w-44"
+                  isTransparent ? "brightness-0 invert w-32 md:w-40" : "brightness-100 invert-0 w-28 md:w-36"
                 )}
               />
             </div>
@@ -124,8 +124,8 @@ export default function Header() {
                   className={cn(
                     "font-medium transition-all duration-300 rounded-lg whitespace-nowrap",
                     isTransparent
-                      ? "px-4 py-2 text-[16px] text-white hover:text-emerald-100 hover:bg-white/10"
-                      : "px-3 py-2 text-[15px] text-slate-700 hover:text-emerald-700 hover:bg-emerald-50"
+                      ? "px-3 py-1.5 text-[15px] text-white hover:text-emerald-100 hover:bg-white/10"
+                      : "px-2.5 py-1.5 text-[14px] text-slate-700 hover:text-emerald-700 hover:bg-emerald-50"
                   )}
                 >
                   {item.label}
@@ -140,25 +140,25 @@ export default function Header() {
                 className={cn(
                   "flex items-center justify-center rounded-full transition-all duration-300 shrink-0",
                   isTransparent
-                    ? "h-11 w-11 text-white hover:bg-white/10"
-                    : "h-10 w-10 text-slate-600 hover:bg-slate-100"
+                    ? "h-9 w-9 text-white hover:bg-white/10"
+                    : "h-8 w-8 text-slate-600 hover:bg-slate-100"
                 )}
                 title="Login"
               >
-                <LogIn className="h-5 w-5" />
+                <LogIn className="h-4 w-4" />
               </Link>
 
               <Button
                 asChild
                 className={cn(
-                  "rounded-full font-bold shadow-lg transition-all duration-500 hover:scale-105 px-6 shrink-0",
+                  "rounded-full font-bold shadow-lg transition-all duration-500 hover:scale-105 px-5 shrink-0",
                   isTransparent
-                    ? "bg-white text-emerald-700 hover:bg-emerald-50 h-12 text-base"
-                    : "bg-emerald-600 text-white hover:bg-emerald-700 h-10 text-sm"
+                    ? "bg-white text-emerald-700 hover:bg-emerald-50 h-10 text-sm"
+                    : "bg-emerald-600 text-white hover:bg-emerald-700 h-9 text-xs"
                 )}
               >
                 <Link href="/donate">
-                  <Heart className="mr-2 h-4 w-4 fill-current" />
+                  <Heart className="mr-2 h-3.5 w-3.5 fill-current" />
                   Donate
                 </Link>
               </Button>

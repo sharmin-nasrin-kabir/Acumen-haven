@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Mail, Linkedin, Twitter } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
+import { motion } from "motion/react"
 
 interface TeamMember {
   name: string
@@ -29,76 +30,76 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
   }
 
   return (
-    <Card className="group rounded-3xl border border-slate-200/60 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden bg-white/90 backdrop-blur-sm relative">
+    <Card className="group rounded-[2rem] border border-slate-200/60 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white relative">
       {/* Profile Image Section */}
-      <div className="relative pt-8 pb-4 text-center">
-        <div className="relative mx-auto w-48 h-48 mb-8">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full shadow-xl"></div>
-          <div className="absolute inset-3 bg-white rounded-full shadow-inner overflow-hidden">
+      <div className="relative pt-10 pb-4 text-center">
+        <div className="relative mx-auto w-40 h-40 mb-6">
+          <div className="absolute inset-0 bg-slate-100 rounded-2xl group-hover:rotate-6 transition-transform duration-500"></div>
+          <div className="absolute inset-0 bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 group-hover:-rotate-3 transition-transform duration-500">
             {!imageError ? (
               <Image
                 src={member.image}
                 alt={`${member.name} profile picture`}
-                width={180}
-                height={180}
-                className="w-full h-full object-cover"
+                width={160}
+                height={160}
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                 onError={handleImageError}
               />
             ) : (
-              <div className={`w-full h-full ${member.bgColor} rounded-full flex items-center justify-center`}>
-                <span className="text-5xl font-bold text-white">{member.initials}</span>
+              <div className={`w-full h-full ${member.bgColor} flex items-center justify-center`}>
+                <span className="text-4xl font-bold text-white tracking-tighter">{member.initials}</span>
               </div>
             )}
           </div>
-          {/* Online status indicator */}
-          <div className="absolute bottom-3 right-3 w-8 h-8 bg-emerald-500 rounded-full border-4 border-white shadow-lg"></div>
         </div>
-        
-        <CardTitle className="text-2xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors duration-300 mb-2">
-          {member.name}
-        </CardTitle>
-        <CardDescription className="font-semibold text-emerald-600 text-base mb-4">
-          {member.role}
-        </CardDescription>
+
+        <div className="px-6">
+          <CardTitle className="text-xl font-black text-slate-900 mb-1">
+            {member.name}
+          </CardTitle>
+          <CardDescription className="font-bold text-emerald-600 text-sm uppercase tracking-widest mb-4">
+            {member.role}
+          </CardDescription>
+        </div>
       </div>
 
-      <CardContent className="px-8 pb-8">
-        <p className="text-sm text-slate-600 leading-relaxed mb-6 text-center">
+      <CardContent className="px-8 pb-10">
+        <p className="text-sm text-slate-500 leading-relaxed mb-8 text-center font-light">
           {member.description}
         </p>
-        
+
         {/* Social Links */}
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-3">
           <a
             href={`mailto:${member.email}`}
-            className="w-10 h-10 bg-slate-100 hover:bg-emerald-100 rounded-full flex items-center justify-center transition-all duration-300 group/link"
+            className="w-10 h-10 border border-slate-100 hover:border-emerald-500 hover:bg-emerald-50 rounded-full flex items-center justify-center transition-all duration-300 group/link"
             aria-label={`Email ${member.name}`}
           >
-            <Mail className="h-5 w-5 text-slate-600 group-hover/link:text-emerald-600 transition-colors duration-300" />
+            <Mail className="h-4 w-4 text-slate-400 group-hover/link:text-emerald-600 transition-colors duration-300" />
           </a>
           <a
             href={member.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 bg-slate-100 hover:bg-blue-100 rounded-full flex items-center justify-center transition-all duration-300 group/link"
+            className="w-10 h-10 border border-slate-100 hover:border-blue-500 hover:bg-blue-50 rounded-full flex items-center justify-center transition-all duration-300 group/link"
             aria-label={`${member.name} LinkedIn`}
           >
-            <Linkedin className="h-5 w-5 text-slate-600 group-hover/link:text-blue-600 transition-colors duration-300" />
+            <Linkedin className="h-4 w-4 text-slate-400 group-hover/link:text-blue-600 transition-colors duration-300" />
           </a>
           <a
             href={member.twitter}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 bg-slate-100 hover:bg-sky-100 rounded-full flex items-center justify-center transition-all duration-300 group/link"
+            className="w-10 h-10 border border-slate-100 hover:border-sky-500 hover:bg-sky-50 rounded-full flex items-center justify-center transition-all duration-300 group/link"
             aria-label={`${member.name} Twitter`}
           >
-            <Twitter className="h-5 w-5 text-slate-600 group-hover/link:text-sky-600 transition-colors duration-300" />
+            <Twitter className="h-4 w-4 text-slate-400 group-hover/link:text-sky-600 transition-colors duration-300" />
           </a>
         </div>
       </CardContent>
 
-      {/* Hover effect overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
+      {/* Decorative gradient line */}
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
     </Card>
   )
 }
