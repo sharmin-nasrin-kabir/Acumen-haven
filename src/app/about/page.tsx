@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Target, Globe, X } from "lucide-react"
+import { Target, Globe, X, History } from "lucide-react"
 import TeamMemberCard from "@/components/TeamMemberCard"
 import Image from "next/image"
 import { teamMembers as teamData } from "@/data/content"
@@ -175,35 +175,73 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
+      {/* Story, Mission & Vision Section */}
       <section className="py-20 px-6 bg-white/50 backdrop-blur-sm border-b border-slate-100">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="group rounded-[2.5rem] border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-emerald-50 to-white overflow-hidden">
-              <CardContent className="p-10 text-center">
-                <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <Target className="h-8 w-8 text-emerald-600" />
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            {/* Our Story - Spans more space on large screens */}
+            <div className="lg:col-span-7 space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-600 rounded-full font-bold text-sm mb-2 shadow-sm uppercase tracking-wider">
+                <History className="w-4 h-4" />
+                Our Story
+              </div>
+              <div className="prose prose-slate max-w-none">
+                <h2 className="text-4xl font-bold text-slate-900 mb-6 tracking-tight">How It All Started</h2>
+                <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
+                  <p>
+                    Acumen Haven was born from a simple but powerful idea: young people have the passion, creativity,
+                    and determination to lead the fight against climate change. What started as a small group of
+                    students organizing environmental workshops has grown into a thriving nonprofit reaching
+                    thousands of young people across communities.
+                  </p>
+                  <p>
+                    Our founders recognized that traditional climate education often felt disconnected from
+                    students' lives. They set out to change that by creating programs that are hands-on,
+                    community-focused, and youth-led. From the Earth Avengers workshops to teacher training
+                    programs, every initiative is designed to make climate action accessible, exciting, and impactful.
+                  </p>
+                  <p>
+                    Today, we partner with schools, community organizations, and global climate networks to amplify
+                    youth voices and create lasting environmental change. Our volunteers and ambassadors are
+                    leading green school initiatives, conducting climate research, and organizing community
+                    action projects that make a real difference.
+                  </p>
+                  <p className="font-medium text-emerald-600">
+                    We're just getting started. Together, we're building a movement where youth don't just
+                    inherit the planet—they actively shape its future.
+                  </p>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">Our Mission</h2>
-                <p className="text-slate-600 leading-relaxed text-lg">
-                  We empower communities to take action on climate change through knowledge, innovation, and research,
-                  building a just and sustainable future for all.
-                </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="group rounded-[2.5rem] border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-blue-50 to-white overflow-hidden">
-              <CardContent className="p-10 text-center">
-                <div className="mx-auto w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <Globe className="h-8 w-8 text-blue-600" />
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">Our Vision</h2>
-                <p className="text-slate-600 leading-relaxed text-lg">
-                  To nurture a new generation of leaders who build a better world while tackling climate change head-on
-                  with innovative and local solutions.
-                </p>
-              </CardContent>
-            </Card>
+            {/* Mission & Vision - Stacked on large screens, side-by-side on tablet */}
+            <div className="lg:col-span-5 grid md:grid-cols-2 lg:grid-cols-1 gap-8">
+              <Card className="group rounded-[2.5rem] border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-emerald-50 to-white overflow-hidden h-full">
+                <CardContent className="p-10 text-center lg:text-left">
+                  <div className="mx-auto lg:mx-0 w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                    <Target className="h-8 w-8 text-emerald-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900 mb-4">Our Mission</h2>
+                  <p className="text-slate-600 leading-relaxed text-lg">
+                    We empower communities to take action on climate change through knowledge, innovation, and research,
+                    building a just and sustainable future for all.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group rounded-[2.5rem] border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-blue-50 to-white overflow-hidden h-full">
+                <CardContent className="p-10 text-center lg:text-left">
+                  <div className="mx-auto lg:mx-0 w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                    <Globe className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900 mb-4">Our Vision</h2>
+                  <p className="text-slate-600 leading-relaxed text-lg">
+                    To nurture a new generation of leaders who build a better world while tackling climate change head-on
+                    with innovative and local solutions.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
@@ -224,7 +262,7 @@ export default function AboutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <TeamMemberCard member={member} />
+                <TeamMemberCard member={member} variant="premium" />
               </motion.div>
             ))}
           </div>
