@@ -1,9 +1,16 @@
+export interface Admin {
+  id: string
+  email: string
+  full_name: string | null
+  created_at: string
+}
+
 export interface Profile {
   id: string
   email: string
   first_name: string | null
   last_name: string | null
-  role: "user" | "admin" | "super_admin"
+  role: "user" | "admin"
   auto_approve_blogs: boolean
   created_at: string
   updated_at: string

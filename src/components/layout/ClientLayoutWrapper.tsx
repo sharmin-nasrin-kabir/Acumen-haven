@@ -7,7 +7,7 @@ import Layout from "@/components/layout/Layout"
 
 // <CHANGE> Added function to check if route should exclude main website layout
 function shouldExcludeLayout(pathname: string) {
-  return pathname.startsWith("/dashboard") || pathname.startsWith("/auth")
+  return pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/admin")
 }
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {

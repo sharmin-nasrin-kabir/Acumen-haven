@@ -18,6 +18,9 @@ import {
   PenTool,
   Database,
   CheckSquare,
+  TrendingUp,
+  Target,
+  MessageCircle,
 } from "lucide-react"
 import type { Profile } from "@/types/auth"
 
@@ -32,21 +35,26 @@ const userNavigation = [
 ]
 
 const adminNavigation = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Events", href: "/dashboard/admin/events", icon: Calendar },
-  { name: "Resources", href: "/dashboard/admin/resources", icon: Database },
-  { name: "Research", href: "/dashboard/admin/research", icon: BookOpen },
-  { name: "Blog Approval", href: "/dashboard/admin/blogs", icon: CheckSquare },
-  { name: "Contact Messages", href: "/dashboard/admin/contact", icon: MessageSquare },
-  { name: "User Management", href: "/dashboard/admin/users", icon: Users },
-  { name: "Settings", href: "/dashboard/settings", icon: Settings },
+  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Events", href: "/admin/events", icon: Calendar },
+  { name: "Resources", href: "/admin/resources", icon: Database },
+  { name: "Research", href: "/admin/research", icon: BookOpen },
+  { name: "Blog Approval", href: "/admin/blogs", icon: CheckSquare },
+  { name: "Contact Messages", href: "/admin/contact", icon: MessageSquare },
+  { name: "User Management", href: "/admin/users", icon: Users },
+  { name: "Site Settings", href: "/admin/site-settings", icon: Settings },
+  { name: "Hero Slider", href: "/admin/hero", icon: LayoutDashboard },
+  { name: "Impact Stats", href: "/admin/impact", icon: TrendingUp },
+  { name: "SDG Goals", href: "/admin/sdgs", icon: Target },
+  { name: "Voices of Change", href: "/admin/testimonials", icon: MessageCircle },
+  { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
 export function DashboardSidebar({ profile }: DashboardSidebarProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const navigation = ["admin", "super_admin"].includes(profile.role) ? adminNavigation : userNavigation
+  const navigation = profile.role === "admin" ? adminNavigation : userNavigation
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col">

@@ -40,7 +40,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <div className="flex flex-1 items-center">
           <h1 className="text-lg font-semibold text-gray-900">
-            {["admin", "super_admin"].includes(profile.role) ? "Admin Dashboard" : "Dashboard"}
+            {profile.role === "admin" ? "Admin Dashboard" : "Dashboard"}
           </h1>
         </div>
         <div className="flex items-center gap-x-4 lg:gap-x-6">
@@ -74,7 +74,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings" className="flex items-center">
+                <Link href="/admin/settings" className="flex items-center">
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile Settings</span>
                 </Link>
