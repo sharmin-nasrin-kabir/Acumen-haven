@@ -76,6 +76,40 @@ export default function HeroSliderPage() {
         setSlides(slides.map(s => s.id === id ? { ...s, [field]: value } : s))
     }
 
+    const uploadImage = async (file: File): Promise<string> => {
+        const formData = new FormData()
+        formData.append("file", file)
+        formData.append("type", "hero")
+
+        const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to upload image")
+        }
+
+        const data = await response.json()
+        return data.url
+    }
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, slideId: string) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        try {
+            setSaving(true)
+            const url = await uploadImage(file)
+            updateSlide(slideId, 'image', url)
+            setSuccess("Image uploaded successfully")
+        } catch (err: any) {
+            setError(err.message)
+        } finally {
+            setSaving(false)
+        }
+    }
+
     async function handleSave() {
         setSaving(true)
         setError(null)
@@ -152,9 +186,10 @@ export default function HeroSliderPage() {
                                             <label className="cursor-pointer bg-white text-slate-900 px-4 py-2 rounded-full text-sm font-bold shadow-xl">
                                                 Change Image
                                                 <input
-                                                    type="text"
+                                                    type="file"
+                                                    accept="image/*"
                                                     className="hidden"
-                                                    onChange={e => updateSlide(slide.id, 'image', e.target.value)}
+                                                    onChange={e => handleFileChange(e, slide.id)}
                                                 />
                                             </label>
                                         </div>

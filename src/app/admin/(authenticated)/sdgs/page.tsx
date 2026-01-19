@@ -8,7 +8,46 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Plus, Trash2, Globe, Save } from "lucide-react"
+import {
+    Loader2,
+    Plus,
+    Trash2,
+    Globe,
+    Save,
+    Heart,
+    GraduationCap,
+    Users,
+    Droplets,
+    Zap,
+    Briefcase,
+    Factory,
+    Leaf,
+    Waves,
+    Shield,
+    Scale,
+    TreePine,
+    Coins,
+    Utensils,
+    CloudRain
+} from "lucide-react"
+
+const AVAILABLE_ICONS = [
+    { name: "Heart", icon: Heart },
+    { name: "GraduationCap", icon: GraduationCap },
+    { name: "Users", icon: Users },
+    { name: "Droplets", icon: Droplets },
+    { name: "Zap", icon: Zap },
+    { name: "Briefcase", icon: Briefcase },
+    { name: "Factory", icon: Factory },
+    { name: "Globe", icon: Globe },
+    { name: "Leaf", icon: Leaf },
+    { name: "Waves", icon: Waves },
+    { name: "Shield", icon: Shield },
+    { name: "Scale", icon: Scale },
+    { name: "TreePine", icon: TreePine },
+    { name: "Coins", icon: Coins },
+    { name: "Utensils", icon: Utensils },
+]
 
 export default function SDGGoalsPage() {
     const [loading, setLoading] = useState(true)
@@ -44,7 +83,7 @@ export default function SDGGoalsPage() {
             sdg_number: "13",
             title: "SDG 13 – Climate Action",
             description: "Empowers communities to combat climate change...",
-            icon_name: "CloudRain",
+            icon_name: "Globe",
             order_index: sdgs.length + 1,
             isNew: true
         }])
@@ -88,6 +127,11 @@ export default function SDGGoalsPage() {
         }
     }
 
+    const renderIcon = (iconName: string) => {
+        const IconComponent = AVAILABLE_ICONS.find(i => i.name === iconName)?.icon || Globe
+        return <IconComponent className="h-6 w-6 text-orange-600" />
+    }
+
     if (loading) return <div className="flex items-center justify-center min-h-[400px]"><Loader2 className="h-8 w-8 animate-spin text-emerald-600" /></div>
 
     return (
@@ -120,7 +164,7 @@ export default function SDGGoalsPage() {
                         <CardContent className="p-8 space-y-4">
                             <div className="flex items-center space-x-4">
                                 <div className="p-3 bg-orange-100 rounded-2xl">
-                                    <Globe className="h-6 w-6 text-orange-600" />
+                                    {renderIcon(sdg.icon_name)}
                                 </div>
                                 <div className="flex-1">
                                     <Input
@@ -144,12 +188,23 @@ export default function SDGGoalsPage() {
                                 placeholder="Goal description..."
                             />
                             <div className="pt-2">
-                                <Label className="text-[10px] uppercase tracking-widest text-slate-400">Icon Name (Lucide)</Label>
-                                <Input
-                                    value={sdg.icon_name}
-                                    onChange={e => updateSdg(sdg.id, 'icon_name', e.target.value)}
-                                    className="text-xs mt-1 p-2 h-8 bg-slate-50 border-0"
-                                />
+                                <Label className="text-[10px] uppercase tracking-widest text-slate-400 mb-2 block">Choose Icon</Label>
+                                <div className="grid grid-cols-5 gap-2 p-2 bg-slate-50 rounded-lg">
+                                    {AVAILABLE_ICONS.map((item) => (
+                                        <button
+                                            key={item.name}
+                                            type="button"
+                                            onClick={() => updateSdg(sdg.id, 'icon_name', item.name)}
+                                            className={`p-2 rounded-md transition-all flex items-center justify-center ${sdg.icon_name === item.name
+                                                    ? "bg-orange-600 text-white shadow-md shadow-orange-200"
+                                                    : "bg-white text-slate-400 hover:bg-orange-50 hover:text-orange-600 border border-slate-100"
+                                                }`}
+                                            title={item.name}
+                                        >
+                                            <item.icon className="h-4 w-4" />
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -158,3 +213,4 @@ export default function SDGGoalsPage() {
         </div>
     )
 }
+

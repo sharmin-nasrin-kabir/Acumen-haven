@@ -8,8 +8,13 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Plus, Trash2, Quote, Save, User } from "lucide-react"
+import { Loader2, Plus, Trash2, Quote, Save, User, CircleUser } from "lucide-react"
 import Image from "next/image"
+
+const DEFAULT_AVATARS = {
+    MALE: "default:male",
+    FEMALE: "default:female"
+}
 
 export default function TestimonialsPage() {
     const [loading, setLoading] = useState(true)
@@ -45,7 +50,7 @@ export default function TestimonialsPage() {
             name: "Full Name",
             role: "Role (e.g. Volunteer)",
             content: "Share the impact storiy here...",
-            image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+            image: DEFAULT_AVATARS.MALE,
             order_index: testimonials.length + 1,
             isNew: true
         }])
@@ -70,6 +75,40 @@ export default function TestimonialsPage() {
         setTestimonials(testimonials.map(t => t.id === id ? { ...t, [field]: value } : t))
     }
 
+    const uploadImage = async (file: File): Promise<string> => {
+        const formData = new FormData()
+        formData.append("file", file)
+        formData.append("type", "testimonials")
+
+        const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to upload image")
+        }
+
+        const data = await response.json()
+        return data.url
+    }
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, testId: string) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        try {
+            setSaving(true)
+            const url = await uploadImage(file)
+            updateTestimonial(testId, 'image', url)
+            setSuccess("Image uploaded!")
+        } catch (err: any) {
+            setError(err.message)
+        } finally {
+            setSaving(false)
+        }
+    }
+
     async function handleSave() {
         setSaving(true)
         setError(null)
@@ -87,6 +126,24 @@ export default function TestimonialsPage() {
         } finally {
             setSaving(false)
         }
+    }
+
+    const renderAvatar = (imageUrl: string, name: string) => {
+        if (imageUrl === DEFAULT_AVATARS.MALE) {
+            return (
+                <div className="w-full h-full flex items-center justify-center bg-blue-50">
+                    <User className="h-8 w-8 text-blue-500" />
+                </div>
+            )
+        }
+        if (imageUrl === DEFAULT_AVATARS.FEMALE) {
+            return (
+                <div className="w-full h-full flex items-center justify-center bg-pink-50">
+                    <CircleUser className="h-8 w-8 text-pink-500" />
+                </div>
+            )
+        }
+        return <Image src={imageUrl || "/placeholder.svg"} alt={name} fill className="object-cover" />
     }
 
     if (loading) return <div className="flex items-center justify-center min-h-[400px]"><Loader2 className="h-8 w-8 animate-spin text-emerald-600" /></div>
@@ -120,8 +177,19 @@ export default function TestimonialsPage() {
                         </div>
                         <CardContent className="p-6 space-y-4">
                             <div className="flex items-center space-x-4">
-                                <div className="relative h-14 w-14 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-50">
-                                    <Image src={t.image} alt={t.name} fill className="object-cover" />
+                                <div className="relative group/avatar">
+                                    <div className="relative h-14 w-14 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-50">
+                                        {renderAvatar(t.image, t.name)}
+                                    </div>
+                                    <label className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover/avatar:opacity-100 cursor-pointer transition-opacity">
+                                        <ImageIcon className="h-4 w-4 text-white" />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={e => handleFileChange(e, t.id)}
+                                        />
+                                    </label>
                                 </div>
                                 <div className="flex-1">
                                     <Input
@@ -138,6 +206,28 @@ export default function TestimonialsPage() {
                                     />
                                 </div>
                             </div>
+
+                            {/* Avatar Toggles */}
+                            <div className="flex items-center gap-2 pt-2 border-t border-slate-50">
+                                <span className="text-[10px] uppercase font-bold text-slate-400 mr-2">Default:</span>
+                                <Button
+                                    size="sm"
+                                    variant={t.image === DEFAULT_AVATARS.MALE ? "default" : "outline"}
+                                    className={`h-7 px-3 text-[10px] ${t.image === DEFAULT_AVATARS.MALE ? "bg-blue-600" : ""}`}
+                                    onClick={() => updateTestimonial(t.id, 'image', DEFAULT_AVATARS.MALE)}
+                                >
+                                    Man
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant={t.image === DEFAULT_AVATARS.FEMALE ? "default" : "outline"}
+                                    className={`h-7 px-3 text-[10px] ${t.image === DEFAULT_AVATARS.FEMALE ? "bg-pink-600" : ""}`}
+                                    onClick={() => updateTestimonial(t.id, 'image', DEFAULT_AVATARS.FEMALE)}
+                                >
+                                    Woman
+                                </Button>
+                            </div>
+
                             <div className="relative">
                                 <Quote className="absolute -top-1 -left-2 h-8 w-8 text-slate-100 z-0" />
                                 <Textarea
@@ -162,3 +252,26 @@ export default function TestimonialsPage() {
         </div>
     )
 }
+
+function ImageIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+            <circle cx="9" cy="9" r="2" />
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+        </svg>
+    )
+}
+
+

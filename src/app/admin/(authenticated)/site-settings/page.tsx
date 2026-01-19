@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Save, Globe, Mail, Info } from "lucide-react"
+import { Loader2, Save, Globe, Mail, Info, ImageIcon } from "lucide-react"
+import { ImageUpload } from "@/components/ui/image-upload"
 
 export default function SiteSettingsPage() {
     const [loading, setLoading] = useState(true)
@@ -25,7 +26,14 @@ export default function SiteSettingsPage() {
     const [footerInfo, setFooterInfo] = useState({
         description: "Youth-led. Climate-focused. Impact-driven. We equip young changemakers to lead on climate, sustainability, and human rights — globally and locally.",
         address: "Arizona, USA & Dhaka, Bangladesh",
-        copyright: "© 2025 Acumen Haven | 501(c)(3) Status: Applied | Registered Nonprofit in Arizona | EIN: 39-2475418"
+        email: "contact@acumenhaven.com",
+        copyright: "© 2025 Acumen Haven | 501(c)(3) Status: Applied | Registered Nonprofit in Arizona | EIN: 39-2475418",
+        footer_image: "https://res.cloudinary.com/dj4f7f52a/image/upload/v1768661267/Summer_Sports_Games_Coloring_Worksheet_in_Blue_White_Simple_Style_1_gstmbm.png",
+        social_facebook: "https://facebook.com/profile.php?id=61568950987067",
+        social_twitter: "https://x.com/acumenhaven",
+        social_instagram: "#",
+        social_linkedin: "https://www.linkedin.com/company/106837339/",
+        social_youtube: "https://www.youtube.com/@AcumenHaven"
     })
 
     const supabase = createClient()
@@ -160,7 +168,7 @@ export default function SiteSettingsPage() {
                             </div>
                             <div>
                                 <CardTitle className="text-lg">Footer Identification</CardTitle>
-                                <CardDescription>Address, copyright, and brand mission</CardDescription>
+                                <CardDescription>Address, copyright, social links, and brand mission</CardDescription>
                             </div>
                         </div>
                     </CardHeader>
@@ -174,14 +182,81 @@ export default function SiteSettingsPage() {
                                 className="resize-none"
                             />
                         </div>
+
                         <div className="space-y-2">
-                            <Label>Physical Address / Office Hubs</Label>
-                            <Input
-                                value={footerInfo.address}
-                                onChange={e => setFooterInfo({ ...footerInfo, address: e.target.value })}
+                            <Label>Footer Background Image</Label>
+                            <ImageUpload
+                                value={footerInfo.footer_image}
+                                onChange={(url) => setFooterInfo({ ...footerInfo, footer_image: url })}
+                                onRemove={() => setFooterInfo({ ...footerInfo, footer_image: "" })}
+                                folder="site"
                             />
                         </div>
-                        <div className="space-y-2">
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Physical Address / Office Hubs</Label>
+                                <Input
+                                    value={footerInfo.address}
+                                    onChange={e => setFooterInfo({ ...footerInfo, address: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Contact Email</Label>
+                                <Input
+                                    value={footerInfo.email}
+                                    onChange={e => setFooterInfo({ ...footerInfo, email: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 pt-2">
+                            <Label className="font-semibold text-slate-900 block border-b pb-2 mb-3">Social Media Links</Label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-slate-500">Facebook URL</Label>
+                                    <Input
+                                        value={footerInfo.social_facebook}
+                                        onChange={e => setFooterInfo({ ...footerInfo, social_facebook: e.target.value })}
+                                        placeholder="https://facebook.com/..."
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-slate-500">Twitter (X) URL</Label>
+                                    <Input
+                                        value={footerInfo.social_twitter}
+                                        onChange={e => setFooterInfo({ ...footerInfo, social_twitter: e.target.value })}
+                                        placeholder="https://x.com/..."
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-slate-500">Instagram URL</Label>
+                                    <Input
+                                        value={footerInfo.social_instagram}
+                                        onChange={e => setFooterInfo({ ...footerInfo, social_instagram: e.target.value })}
+                                        placeholder="https://instagram.com/..."
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-slate-500">LinkedIn URL</Label>
+                                    <Input
+                                        value={footerInfo.social_linkedin}
+                                        onChange={e => setFooterInfo({ ...footerInfo, social_linkedin: e.target.value })}
+                                        placeholder="https://linkedin.com/..."
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-slate-500">YouTube URL</Label>
+                                    <Input
+                                        value={footerInfo.social_youtube}
+                                        onChange={e => setFooterInfo({ ...footerInfo, social_youtube: e.target.value })}
+                                        placeholder="https://youtube.com/..."
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2 pt-2">
                             <Label>Copyright Footer Line</Label>
                             <Textarea
                                 value={footerInfo.copyright}

@@ -13,22 +13,30 @@ const Footer = () => {
   const [footerInfo, setFooterInfo] = useState({
     description: "Youth-led. Climate-focused. Impact-driven. We equip young changemakers to lead on climate, sustainability, and human rights — globally and locally.",
     address: "Arizona, USA & Dhaka, Bangladesh",
-    copyright: "© 2025 Acumen Haven | 501(c)(3) Status: Applied | Registered Nonprofit in Arizona | EIN: 39-2475418"
+    email: "contact@acumenhaven.com",
+    copyright: "© 2025 Acumen Haven | 501(c)(3) Status: Applied | Registered Nonprofit in Arizona | EIN: 39-2475418",
+    footer_image: "https://res.cloudinary.com/dj4f7f52a/image/upload/v1768661267/Summer_Sports_Games_Coloring_Worksheet_in_Blue_White_Simple_Style_1_gstmbm.png",
+    social_facebook: "https://facebook.com/profile.php?id=61568950987067",
+    social_twitter: "https://x.com/acumenhaven",
+    social_instagram: "#",
+    social_linkedin: "https://www.linkedin.com/company/106837339/",
+    social_youtube: "https://www.youtube.com/@AcumenHaven"
   })
 
   useEffect(() => {
     const supabase = createClient()
     supabase.from('site_settings').select('value').eq('key', 'footer_info').single().then(({ data }) => {
-      if (data?.value) setFooterInfo(data.value)
+      // Merge with default state to ensure all keys exist
+      if (data?.value) setFooterInfo((prev) => ({ ...prev, ...data.value }))
     })
   }, [])
 
   const socialLinks = [
-    { icon: Facebook, href: "https://facebook.com/profile.php?id=61568950987067", label: "Facebook" },
-    { icon: Twitter, href: "https://x.com/acumenhaven", label: "Twitter" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "https://www.linkedin.com/company/106837339/", label: "LinkedIn" },
-    { icon: Youtube, href: "https://www.youtube.com/@AcumenHaven", label: "YouTube" },
+    { icon: Facebook, href: footerInfo.social_facebook || "#", label: "Facebook" },
+    { icon: Twitter, href: footerInfo.social_twitter || "#", label: "Twitter" },
+    { icon: Instagram, href: footerInfo.social_instagram || "#", label: "Instagram" },
+    { icon: Linkedin, href: footerInfo.social_linkedin || "#", label: "LinkedIn" },
+    { icon: Youtube, href: footerInfo.social_youtube || "#", label: "YouTube" },
   ]
 
   const maskColor = isHomePage ? "#0f172a" : "#ffffff"
@@ -55,7 +63,7 @@ const Footer = () => {
 
       <div className="relative bg-[#1f1f22]" style={{ marginTop: "-1px" }}>
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0" style={{ backgroundImage: "url(https://res.cloudinary.com/dj4f7f52a/image/upload/v1768661267/Summer_Sports_Games_Coloring_Worksheet_in_Blue_White_Simple_Style_1_gstmbm.png)", backgroundSize: "contain", backgroundPosition: "center top", backgroundRepeat: "no-repeat", opacity: 0.2, width: "51%", height: "100%", top: "-5%", left: "24.5%" }} />
+          <div className="absolute inset-0" style={{ backgroundImage: `url(${footerInfo.footer_image})`, backgroundSize: "contain", backgroundPosition: "center top", backgroundRepeat: "no-repeat", opacity: 0.2, width: "51%", height: "100%", top: "-5%", left: "24.5%" }} />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/40" />
         </div>
 
@@ -81,7 +89,7 @@ const Footer = () => {
                   </div>
                 </div>
                 <div className="space-y-5">
-                  <div className="flex items-center space-x-4 text-[#EDEDED]"><Mail className="h-6 w-6 text-green-400" /><a href="mailto:contact@acumenhaven.com" className="hover:text-white font-light text-[17px]">contact@acumenhaven.com</a></div>
+                  <div className="flex items-center space-x-4 text-[#EDEDED]"><Mail className="h-6 w-6 text-green-400" /><a href={`mailto:${footerInfo.email}`} className="hover:text-white font-light text-[17px]">{footerInfo.email}</a></div>
                   <div className="flex items-center space-x-4 text-[#EDEDED]"><MapPin className="h-6 w-6 text-green-400" /><span className="font-light text-[17px]">{footerInfo.address}</span></div>
                 </div>
               </div>

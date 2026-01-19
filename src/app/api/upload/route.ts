@@ -1,7 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
-import { join } from "path"
-import { v4 as uuidv4 } from "uuid"
+import { v2 as cloudinary } from "cloudinary"
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,42 +18,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 })
     }
 
-    let uploadsDir: string
-    let allowedTypes: string[]
-
-    if (type && ["research", "resources"].includes(type)) {
-      // New PDF upload system
-      allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"]
-      uploadsDir = join(process.cwd(), "public", "uploads", type)
-    } else {
-      // Legacy event image uploads (no type parameter)
-      allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
-      uploadsDir = join(process.cwd(), "public", "uploads", "events")
-    }
-
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json({ error: "Invalid file type" }, { status: 400 })
-    }
-
-    // Generate unique filename
-    const fileExtension = file.name.split(".").pop()
-    const fileName = `${uuidv4()}.${fileExtension}`
-
-    // Create uploads directory
-    await mkdir(uploadsDir, { recursive: true })
-
-    // Save file
-    const filePath = join(uploadsDir, fileName)
+    // Convert file to buffer
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    await writeFile(filePath, buffer)
+    // Upload to Cloudinary
+    return new Promise((resolve) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: `acumen-haven/${type || "events"}`,
+          resource_type: "auto",
+        },
+        (error, result) => {
+          if (error) {
+            console.error("Cloudinary upload error:", error)
+            resolve(NextResponse.json({ error: "Upload failed" }, { status: 500 }))
+          } else {
+            resolve(NextResponse.json({ url: result?.secure_url }))
+          }
+        },
+      )
 
-    // Return the public URL
-    const folderName = type || "events"
-    const publicUrl = `/uploads/${folderName}/${fileName}`
-
-    return NextResponse.json({ url: publicUrl })
+      uploadStream.end(buffer)
+    })
   } catch (error) {
     console.error("Upload error:", error)
     return NextResponse.json({ error: "Upload failed" }, { status: 500 })

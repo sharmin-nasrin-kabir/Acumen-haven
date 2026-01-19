@@ -19,6 +19,12 @@ import {
 } from "lucide-react"
 import type { Event } from "@/types/events"
 import CountUp from "@/components/CountUp"
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
 interface HomeClientProps {
@@ -284,31 +290,127 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-4 sm:px-6 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 px-6 py-3 text-lg md:text-xl rounded-full">Voices of Change</Badge>
-            <h2 className="text-3xl md:text-5xl font-bold mt-6">Inspiring Climate Action</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
-              <Card key={t.id} className="bg-white/5 border-white/10 p-8 rounded-[2rem] hover:bg-white/10 transition-all duration-300">
-                <CardContent className="p-0 space-y-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-blue-500/50">
-                      <Image src={t.image} alt={t.name} fill className="object-cover" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg">{t.name}</h4>
-                      <p className="text-blue-400 text-sm font-medium">{t.role}</p>
+      {/* Community Voices - Infinite Carousel */}
+      <section className="py-24 px-0 bg-white overflow-hidden border-t border-slate-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 mb-16 text-center">
+          <Badge className="bg-emerald-50 text-emerald-700 px-6 py-3 text-lg rounded-full border border-emerald-100 shadow-sm font-bold">
+            Community Voices
+          </Badge>
+          <h2 className="text-4xl md:text-6xl font-black text-slate-900 mt-6 tracking-tight">Voices of Change</h2>
+          <p className="text-slate-500 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            Stories of impact and inspiration from the dedicated individuals driving our mission forward.
+          </p>
+        </div>
+
+        <div className="relative flex overflow-hidden">
+          {/* Main scrolling wrapper */}
+          <div
+            className="flex gap-8 animate-scroll whitespace-nowrap py-10 px-8 hover:[animation-play-state:paused] cursor-pointer"
+            style={{ animationDuration: '60s' }}
+          >
+            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
+              <Dialog key={`${t.id}-${idx}`}>
+                <DialogTrigger asChild>
+                  <Card className="w-[450px] flex-shrink-0 bg-white border border-slate-200/60 p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/40 hover:border-emerald-200 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] group">
+                    <CardContent className="p-0 space-y-6">
+                      <div className="flex items-center space-x-4">
+                        <div className="relative h-16 w-16 rounded-full overflow-hidden border-2 border-emerald-50 bg-slate-50 shadow-inner">
+                          {t.image === "default:male" ? (
+                            <div className="w-full h-full flex items-center justify-center bg-blue-50"><Icons.User className="h-8 w-8 text-blue-500" /></div>
+                          ) : t.image === "default:female" ? (
+                            <div className="w-full h-full flex items-center justify-center bg-pink-50"><Icons.CircleUser className="h-8 w-8 text-pink-500" /></div>
+                          ) : (
+                            <Image src={t.image || "/placeholder.svg"} alt={t.name} fill className="object-cover" />
+                          )}
+                        </div>
+                        <div className="whitespace-normal">
+                          <h4 className="font-bold text-slate-900 text-xl tracking-tight">{t.name}</h4>
+                          <p className="text-emerald-600 text-xs font-black uppercase tracking-[0.2em]">{t.role}</p>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <Icons.Quote className="absolute -top-4 -left-2 h-12 w-12 text-slate-100/80 z-0" />
+                        <p className="relative z-10 text-slate-600 italic leading-relaxed text-lg whitespace-normal line-clamp-4 font-medium">
+                          "{t.content}"
+                        </p>
+                      </div>
+                      <div className="pt-2">
+                        <span className="text-emerald-600 text-sm font-bold flex items-center group-hover:underline">
+                          Read Full Story <ArrowRight className="ml-2 h-4 w-4" />
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px] rounded-[3rem] p-0 overflow-hidden border-none shadow-2xl">
+                  <div className="bg-emerald-900 px-8 py-10 text-white relative">
+                    <div className="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
+                    <div className="flex items-center space-x-6 relative z-10">
+                      <div className="relative h-24 w-24 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl">
+                        {t.image === "default:male" ? (
+                          <div className="w-full h-full flex items-center justify-center bg-blue-100"><Icons.User className="h-12 w-12 text-blue-600" /></div>
+                        ) : t.image === "default:female" ? (
+                          <div className="w-full h-full flex items-center justify-center bg-pink-100"><Icons.CircleUser className="h-12 w-12 text-pink-600" /></div>
+                        ) : (
+                          <Image src={t.image || "/placeholder.svg"} alt={t.name} fill className="object-cover" />
+                        )}
+                      </div>
+                      <div>
+                        <DialogTitle className="text-3xl font-black tracking-tight">{t.name}</DialogTitle>
+                        <p className="text-emerald-400 font-bold uppercase tracking-widest text-sm mt-1">{t.role}</p>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-slate-300 italic leading-relaxed text-lg">"{t.content}"</p>
-                </CardContent>
-              </Card>
+                  <div className="p-8 md:p-12 bg-white relative">
+                    <Icons.Quote className="absolute top-8 left-8 h-20 w-20 text-slate-50 z-0" />
+                    <div className="relative z-10">
+                      <p className="text-slate-600 text-xl leading-relaxed italic font-medium">
+                        "{t.content}"
+                      </p>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
+
+          {/* Subtle side fades */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        </div>
+      </section>
+
+      {/* CTA Section: Ready to make a real difference? */}
+      <section className="py-28 px-6 bg-[#0f172a] text-white relative overflow-hidden">
+        {/* Background Gradients removed */}
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-5 py-2.5 rounded-full mb-10 backdrop-blur-md">
+            <Icons.Lightbulb className="w-5 h-5 text-emerald-400 group-hover:animate-pulse" />
+            <span className="text-sm font-bold text-emerald-400 tracking-wider">Join the Movement</span>
+          </div>
+
+          <h2 className="text-5xl md:text-8xl font-black mb-10 leading-[1] tracking-tighter">
+            Ready to make a <br />
+            <span className="text-emerald-400">real difference?</span>
+          </h2>
+
+          <p className="text-slate-400 text-xl md:text-2xl mb-14 max-w-2xl mx-auto leading-relaxed font-medium">
+            Join a global community of young changemakers transforming their ideas into impactful action. Your journey starts here.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20">
+            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white px-12 h-16 sm:h-20 rounded-full font-bold text-2xl shadow-[0_0_50px_rgba(16,185,129,0.3)] transition-all hover:scale-105 group active:scale-95" asChild>
+              <Link href="/get-involved">Get Started <ArrowRight className="ml-3 h-7 w-7 group-hover:translate-x-2 transition-transform" /></Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-white/20 bg-white/5 hover:bg-white/10 text-white px-12 h-16 sm:h-20 rounded-full font-bold text-2xl backdrop-blur-md transition-all hover:scale-105 active:scale-95" asChild>
+              <Link href="/about">Read Our Story</Link>
+            </Button>
+          </div>
+
+          <p className="text-slate-500 text-xs font-black tracking-[0.5em] uppercase">
+            Trusted by communities across <span className="text-white">Bangladesh</span> and the <span className="text-white">US</span>
+          </p>
         </div>
       </section>
     </div>
