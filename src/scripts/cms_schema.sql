@@ -105,28 +105,14 @@ BEGIN
   END IF;
 END $$;
 
--- Admin-only modification policies (using the 'admin' table we created earlier)
--- Note: auth.uid() must exist in public.admin table
-
+-- Admin-only modification policies
 DO $$ 
 DECLARE
   tables text[] := ARRAY['site_settings', 'hero_slides', 'impact_stats', 'sdg_alignment', 'testimonials', 'site_links'];
   t text;
 BEGIN
   FOREACH t IN ARRAY tables LOOP
-    EXECUTE format('DROP POLICY IF EXISTS "Admin full access %I" ON public.%I', t, t);
-    EXECUTE format('CREATE POLICY "Admin full access %I" ON public.%I FOR ALL USING (EXISTS (SELECT 1 FROM public.admin WHERE id = auth.uid()))', t, t);
+    EXECUTE format('DROP POLICY IF EXISTS "Admin full access %%I" ON public.%%I', t, t);
+    EXECUTE format('CREATE POLICY "Admin full access %%I" ON public.%%I FOR ALL USING (EXISTS (SELECT 1 FROM public.admin WHERE id = auth.uid()))', t, t);
   END LOOP;
 END $$;
-
--- 7. INITIAL DATA SEED (Optional but helpful to start with current content)
--- Top Bar Info
-INSERT INTO public.site_settings (key, value) VALUES 
-('top_bar', '{"email": "contact@acumenhaven.com", "status": "501(c)(3) Status: Applied", "slogan": "Youth-led. Climate-focused. Impact-driven."}')
-ON CONFLICT (key) DO NOTHING;
-
--- Hero Slides
-INSERT INTO public.hero_slides (title, link, image, color_class, bg_color_class, order_index) VALUES
-('Transport & Mobility', '/programs/transport-mobility', '/hero-transport-mobility.png', 'from-blue-500 to-blue-600', 'bg-blue-500', 1),
-('Education & Youth Empowerment', '/programs/education-empowerment', '/hero-education-youth.png', 'from-emerald-500 to-emerald-600', 'bg-emerald-500', 2)
-ON CONFLICT DO NOTHING;
