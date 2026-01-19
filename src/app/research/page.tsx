@@ -64,7 +64,7 @@ export default function ResearchPage() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <p className="text-lg text-slate-700 leading-relaxed">
               Our Research Department serves as the knowledge engine of our mission, focused on uncovering the root
-              causes, behavioral patterns, and systemic challenges that fuel the climate crisis. Whether it's air
+              causes, behavioral patterns, and systemic challenges that fuel the climate crisis. Whether it&apos;s air
               pollution from urban transport, food systems and waste, or the social dimensions of environmental
               injustice, research allows us to design smarter interventions and empower communities with evidence-based
               solutions.
@@ -84,20 +84,19 @@ export default function ResearchPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {researchAreas.map((area, index) => (
+              {researchAreas.map((area) => (
                 <Card
-                  key={index}
+                  key={area.title}
                   className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 shadow-lg rounded-3xl overflow-hidden"
                 >
                   <CardHeader className="text-center pb-4">
                     <div
-                      className={`inline-flex p-4 rounded-2xl mb-4 mx-auto shadow-lg ${
-                        area.color === "emerald"
-                          ? "bg-emerald-100 text-emerald-600"
-                          : area.color === "blue"
-                            ? "bg-blue-100 text-blue-600"
-                            : "bg-orange-100 text-orange-600"
-                      }`}
+                      className={`inline-flex p-4 rounded-2xl mb-4 mx-auto shadow-lg ${area.color === "emerald"
+                        ? "bg-emerald-100 text-emerald-600"
+                        : area.color === "blue"
+                          ? "bg-blue-100 text-blue-600"
+                          : "bg-orange-100 text-orange-600"
+                        }`}
                     >
                       {area.icon}
                     </div>
@@ -116,7 +115,7 @@ export default function ResearchPage() {
           {/* What You'll Find Here */}
           <div className="space-y-12">
             <div className="text-center">
-              <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What You'll Find Here</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What You&apos;ll Find Here</h2>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
                 Explore our research outputs, educational programs, and data resources designed to advance climate
                 knowledge and action.
@@ -199,8 +198,8 @@ export default function ResearchPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    {dataHubItems.map((item, index) => (
-                      <div key={index} className="flex items-start space-x-2">
+                    {dataHubItems.map((item) => (
+                      <div key={item} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
                         <p className="text-sm text-slate-600">{item}</p>
                       </div>
@@ -230,7 +229,7 @@ export default function ResearchPage() {
             <div className="max-w-3xl mx-auto space-y-6 relative z-10">
               <h3 className="text-2xl md:text-3xl font-bold text-white">Join Our Research Community</h3>
               <p className="text-emerald-100 text-lg">
-                Whether you're a student, researcher, or community leader, there are many ways to get involved in our
+                Whether you&apos;re a student, researcher, or community leader, there are many ways to get involved in our
                 research initiatives and contribute to climate solutions.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

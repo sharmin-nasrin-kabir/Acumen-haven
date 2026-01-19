@@ -139,7 +139,7 @@ export default function TransportMobilityPage() {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-                How it's connected to climate change:
+                How it&apos;s connected to climate change:
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed">
                 The transport sector is one of the fastest-growing sources of greenhouse gas emissions globally. Daily
@@ -154,7 +154,7 @@ export default function TransportMobilityPage() {
                 Why Acumen Haven is working in this area:
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed">
-                At Acumen Haven, we believe transforming urban mobility is key to a climate-resilient future. That's why
+                At Acumen Haven, we believe transforming urban mobility is key to a climate-resilient future. That&apos;s why
                 we educate students, teachers, rickshaw pullers, and drivers about sustainable transport choices. We
                 connect traffic awareness with climate awareness, empowering people to adopt low-emission behaviors like
                 walking, cycling, carpooling, or using public transport. Our programs also emphasize understanding and
@@ -174,14 +174,14 @@ export default function TransportMobilityPage() {
               <Calendar className="h-5 w-5 mr-2" />
               Upcoming Project
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What's Coming Next</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What&apos;s Coming Next</h2>
           </div>
 
           <div className="space-y-8">
-            {upcomingProjects.map((project, index) => {
+            {upcomingProjects.map((project) => {
               const IconComponent = project.icon
               return (
-                <Card key={index} className={`p-8 rounded-3xl border-0 shadow-lg ${project.bgColor}`}>
+                <Card key={project.title} className={`p-8 rounded-3xl border-0 shadow-lg ${project.bgColor}`}>
                   <CardContent className="p-0">
                     <div className="flex flex-col lg:flex-row gap-8">
                       <div className="lg:w-1/3">
@@ -227,11 +227,11 @@ export default function TransportMobilityPage() {
           </div>
 
           <div className="grid gap-8">
-            {ongoingProjects.map((project, index) => {
+            {ongoingProjects.map((project) => {
               const IconComponent = project.icon
               return (
                 <Card
-                  key={index}
+                  key={project.title}
                   className={`p-8 rounded-3xl border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 ${project.bgColor}`}
                 >
                   <CardContent className="p-0">
@@ -279,10 +279,10 @@ export default function TransportMobilityPage() {
           </div>
 
           <div className="space-y-8">
-            {pastProjects.map((project, index) => {
+            {pastProjects.map((project) => {
               const IconComponent = project.icon
               return (
-                <Card key={index} className={`p-8 rounded-3xl border-0 shadow-lg ${project.bgColor}`}>
+                <Card key={project.title} className={`p-8 rounded-3xl border-0 shadow-lg ${project.bgColor}`}>
                   <CardContent className="p-0">
                     <div className="flex flex-col lg:flex-row gap-8">
                       <div className="lg:w-1/3">

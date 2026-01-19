@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Save, Globe, Mail, Info, ImageIcon } from "lucide-react"
+import { Loader2, Save, Globe, Info } from "lucide-react"
 import { ImageUpload } from "@/components/ui/image-upload"
 
 export default function SiteSettingsPage() {
@@ -39,24 +39,23 @@ export default function SiteSettingsPage() {
     const supabase = createClient()
 
     useEffect(() => {
-        fetchSettings()
-    }, [])
+        async function fetchSettings() {
+            try {
+                const { data, error } = await supabase.from('site_settings').select('*')
+                if (error) throw error
 
-    async function fetchSettings() {
-        try {
-            const { data, error } = await supabase.from('site_settings').select('*')
-            if (error) throw error
-
-            data?.forEach(item => {
-                if (item.key === 'top_bar') setTopBar(item.value)
-                if (item.key === 'footer_info') setFooterInfo(item.value)
-            })
-        } catch (err: any) {
-            setError(err.message)
-        } finally {
-            setLoading(false)
+                data?.forEach(item => {
+                    if (item.key === 'top_bar') setTopBar(item.value)
+                    if (item.key === 'footer_info') setFooterInfo(item.value)
+                })
+            } catch (err: any) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
         }
-    }
+        fetchSettings()
+    }, [supabase])
 
     async function handleSave() {
         setSaving(true)

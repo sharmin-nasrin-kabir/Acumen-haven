@@ -66,8 +66,8 @@ export default function GetInvolvedPage() {
           </Badge>
           <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-slate-900 mb-6">Get Involved</h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Join our community of changemakers working to create a sustainable future. Whether you're a student,
-            professional, or organization, there's a place for you here.
+            Join our community of changemakers working to create a sustainable future. Whether you&apos;re a student,
+            professional, or organization, there&apos;s a place for you here.
           </p>
         </div>
       </section>
@@ -86,16 +86,15 @@ export default function GetInvolvedPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {roles.map((role, index) => {
+            {roles.map((role) => {
               const IconComponent = role.icon
               const isSelected = selectedRole === role.id
 
               return (
                 <Card
                   key={role.id}
-                  className={`group rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden card-hover cursor-pointer bg-white ${
-                    isSelected ? "ring-4 ring-emerald-500 shadow-2xl" : ""
-                  }`}
+                  className={`group rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden card-hover cursor-pointer bg-white ${isSelected ? "ring-4 ring-emerald-500 shadow-2xl" : ""
+                    }`}
                   onClick={() => setSelectedRole(isSelected ? null : role.id)}
                 >
                   <CardHeader className="text-center">
@@ -146,7 +145,7 @@ export default function GetInvolvedPage() {
                       <CardContent>
                         <div className="grid md:grid-cols-3 gap-8">
                           <div>
-                            <h4 className="font-bold text-slate-900 mb-3">What You'll Do</h4>
+                            <h4 className="font-bold text-slate-900 mb-3">What You&apos;ll Do</h4>
                             <p className="text-slate-700 mb-4">{role.description}</p>
                             <p className="text-sm text-slate-600">
                               <strong>Time Commitment:</strong> {role.commitment}
@@ -196,7 +195,7 @@ export default function GetInvolvedPage() {
               </Badge>
               <h3 className="text-3xl font-bold text-slate-900 mb-4">Ready to Get Started?</h3>
               <p className="text-lg text-slate-600">
-                Fill out our quick interest form and we'll match you with the perfect opportunity.
+                Fill out our quick interest form and we&apos;ll match you with the perfect opportunity.
               </p>
             </div>
 

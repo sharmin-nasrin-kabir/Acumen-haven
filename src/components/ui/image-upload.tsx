@@ -1,13 +1,14 @@
 "use client"
 
-import { useState, useRef } from "react"
-import { Upload, X, ImageIcon, Loader2 } from "lucide-react"
+import React, { useState, useRef } from "react"
+import { Upload, X, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 interface ImageUploadProps {
     value?: string
+    // eslint-disable-next-line no-unused-vars
     onChange: (url: string) => void
     onRemove: () => void
     folder?: string

@@ -143,7 +143,7 @@ export default function WasteManagementPage() {
                 Poor waste management is a hidden but major driver of climate change. When organic waste ends up in
                 landfills, it decomposes anaerobically and releases methane — a greenhouse gas over 80 times more potent
                 than CO₂ in the short term. Open burning of waste, common in many low-income areas, releases carbon
-                dioxide, black carbon, and toxic pollutants. Additionally, a linear "take–make–dispose" economy leads to
+                dioxide, black carbon, and toxic pollutants. Additionally, a linear &quot;take–make–dispose&quot; economy leads to
                 constant extraction of resources, fueling more emissions and environmental degradation.
               </p>
               <p className="text-lg text-red-700 font-semibold">
@@ -202,7 +202,7 @@ export default function WasteManagementPage() {
 
               <p className="text-lg text-slate-700 leading-relaxed mt-4">
                 <span className="font-semibold">
-                  This is not just about managing waste — it's about redesigning our relationship with the environment
+                  This is not just about managing waste — it&apos;s about redesigning our relationship with the environment
                   to build a low-carbon, sustainable future.
                 </span>
               </p>
@@ -219,7 +219,7 @@ export default function WasteManagementPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">From Climate Problem to Climate Solution</h2>
             <p className="text-xl text-teal-100 leading-relaxed">
               Every ton of organic waste diverted from landfills prevents approximately 1 ton of CO₂ equivalent in
-              methane emissions. Through our programs, we're turning waste management into direct climate action.
+              methane emissions. Through our programs, we&apos;re turning waste management into direct climate action.
             </p>
           </div>
         </div>
@@ -233,15 +233,15 @@ export default function WasteManagementPage() {
               <Calendar className="h-5 w-5 mr-2" />
               Upcoming Projects
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What's Coming Next</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What&apos;s Coming Next</h2>
           </div>
 
           <div className="grid gap-8">
-            {upcomingProjects.map((project, index) => {
+            {upcomingProjects.map((project) => {
               const IconComponent = project.icon
               return (
                 <Card
-                  key={index}
+                  key={project.title}
                   className={`p-8 rounded-3xl border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 ${project.bgColor}`}
                 >
                   <CardContent className="p-0">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -12,10 +12,7 @@ import {
   TrendingUp,
   Calendar,
   MapPin,
-  FlaskConical,
-  BookOpen,
   Globe,
-  Target,
 } from "lucide-react"
 import type { Event } from "@/types/events"
 import CountUp from "@/components/CountUp"
@@ -25,7 +22,6 @@ import {
   DialogTrigger,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { cn } from "@/lib/utils"
 
 interface HomeClientProps {
   heroSlides: any[]
@@ -44,57 +40,21 @@ export default function HomeClient({
 }: HomeClientProps) {
 
   // Use DB data if available, fallback to empty to avoid crashes (though server should provide)
-  const heroSlides = dbHeroSlides?.length > 0 ? dbHeroSlides : []
-  const impactStats = dbImpactStats?.length > 0 ? dbImpactStats : []
-  const sdgs = dbSdgs?.length > 0 ? dbSdgs : []
-  const testimonials = dbTestimonials?.length > 0 ? dbTestimonials : []
+  const heroSlides = useMemo(() => dbHeroSlides?.length > 0 ? dbHeroSlides : [], [dbHeroSlides])
+  const impactStats = useMemo(() => dbImpactStats?.length > 0 ? dbImpactStats : [], [dbImpactStats])
+  const sdgs = useMemo(() => dbSdgs?.length > 0 ? dbSdgs : [], [dbSdgs])
+  const testimonials = useMemo(() => dbTestimonials?.length > 0 ? dbTestimonials : [], [dbTestimonials])
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-  const [testimonialIndex, setTestimonialIndex] = useState(0)
-  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(new Array(heroSlides.length).fill(false))
-
-  const latestResearch = [
-    {
-      id: 1,
-      title: "Urban Transport and Air Quality: A Youth-Led Assessment in Dhaka",
-      type: "Research Paper",
-      year: 2024,
-      description: "Comprehensive analysis of air pollution from urban transportation systems in Dhaka, Bangladesh.",
-      image: "/research-traffic-study.png",
-    },
-    {
-      id: 2,
-      title: "Climate Education Impact Assessment: School-Based Programs",
-      type: "Survey Report",
-      year: 2023,
-      description: "Evaluation of climate education programs in schools across the US and Bangladesh.",
-      image: "/research-youth-leadership.png",
-    },
-    {
-      id: 3,
-      title: "Community Perceptions of Traffic Management Solutions",
-      type: "Case Study",
-      year: 2023,
-      description: "Multi-stakeholder analysis of traffic management perceptions including police, drivers, and public.",
-      image: "/research-community-action.png",
-    }
-  ]
 
   // Preload images
   useEffect(() => {
     if (heroSlides.length === 0) return
     const preloadImages = async () => {
-      const imagePromises = heroSlides.map((slide, index) => {
+      const imagePromises = heroSlides.map((slide) => {
         return new Promise<void>((resolve) => {
           const img = new window.Image()
-          img.onload = () => {
-            setImagesLoaded((prev) => {
-              const newState = [...prev]
-              newState[index] = true
-              return newState
-            })
-            resolve()
-          }
+          img.onload = () => resolve()
           img.onerror = () => resolve()
           img.src = slide.image
         })
@@ -114,17 +74,6 @@ export default function HomeClient({
 
   const handleIndicatorClick = (index: number) => setCurrentSlideIndex(index)
   const currentSlide = heroSlides[currentSlideIndex] || { title: '', color_class: '', link: '' }
-
-  // Testimonial slider logic
-  const testimonialsPerPage = Math.min(testimonials.length, 3)
-  const maxPages = Math.ceil(testimonials.length / testimonialsPerPage)
-  const canSlide = testimonials.length > 3
-
-  const getVisibleTestimonials = () => {
-    if (!canSlide) return testimonials
-    const start = testimonialIndex * testimonialsPerPage
-    return testimonials.slice(start, start + testimonialsPerPage)
-  }
 
   // Dynamic Icon Helper
   const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
@@ -331,7 +280,7 @@ export default function HomeClient({
                       <div className="relative">
                         <Icons.Quote className="absolute -top-4 -left-2 h-12 w-12 text-slate-100/80 z-0" />
                         <p className="relative z-10 text-slate-600 italic leading-relaxed text-lg whitespace-normal line-clamp-4 font-medium">
-                          "{t.content}"
+                          &quot;{t.content}&quot;
                         </p>
                       </div>
                       <div className="pt-2">
@@ -365,7 +314,7 @@ export default function HomeClient({
                     <Icons.Quote className="absolute top-8 left-8 h-20 w-20 text-slate-50 z-0" />
                     <div className="relative z-10">
                       <p className="text-slate-600 text-xl leading-relaxed italic font-medium">
-                        "{t.content}"
+                        &quot;{t.content}&quot;
                       </p>
                     </div>
                   </div>

@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
@@ -62,7 +63,6 @@ export function BlogForm({ blog }: BlogFormProps) {
   })
 
   // Rich text editor state
-  const [selectedText, setSelectedText] = useState("")
   const [contentRef, setContentRef] = useState<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
@@ -228,11 +228,9 @@ export function BlogForm({ blog }: BlogFormProps) {
   }
 
   const removeContentImage = (index: number) => {
-    const imageToRemove = contentImages[index]
     setContentImages((prev) => prev.filter((_, i) => i !== index))
 
     // Remove placeholder from content
-    const placeholder = `[IMAGE_${index}]`
     const updatedContent = formData.content.replace(new RegExp(`\\n*\\[IMAGE_${index}\\]\\n*`, "g"), "")
     handleInputChange("content", updatedContent)
   }
@@ -360,11 +358,14 @@ export function BlogForm({ blog }: BlogFormProps) {
             <Label htmlFor="featured_image">Featured Image</Label>
             {formData.featured_image && !featuredImage && (
               <div className="mb-2">
-                <img
-                  src={formData.featured_image || "/placeholder.svg"}
-                  alt="Current featured image"
-                  className="w-32 h-20 object-cover rounded border"
-                />
+                <div className="relative w-32 h-20">
+                  <Image
+                    src={formData.featured_image || "/placeholder.svg"}
+                    alt="Current featured image"
+                    fill
+                    className="object-cover rounded border"
+                  />
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">Current featured image</p>
               </div>
             )}
@@ -514,7 +515,7 @@ export function BlogForm({ blog }: BlogFormProps) {
                   </div>
                 ))}
                 <p className="text-xs text-muted-foreground">
-                  Images will be inserted as placeholders in your content. They'll be uploaded when you save.
+                  Images will be inserted as placeholders in your content. They&apos;ll be uploaded when you save.
                 </p>
               </div>
             )}

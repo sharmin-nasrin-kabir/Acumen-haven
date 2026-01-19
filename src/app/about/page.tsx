@@ -196,7 +196,7 @@ export default function AboutPage() {
                   </p>
                   <p>
                     Our founders recognized that traditional climate education often felt disconnected from
-                    students' lives. They set out to change that by creating programs that are hands-on,
+                    students&apos; lives. They set out to change that by creating programs that are hands-on,
                     community-focused, and youth-led. From the Earth Avengers workshops to teacher training
                     programs, every initiative is designed to make climate action accessible, exciting, and impactful.
                   </p>
@@ -207,7 +207,7 @@ export default function AboutPage() {
                     action projects that make a real difference.
                   </p>
                   <p className="font-medium text-emerald-600">
-                    We're just getting started. Together, we're building a movement where youth don't just
+                    We&apos;re just getting started. Together, we&apos;re building a movement where youth don&apos;t just
                     inherit the planet—they actively shape its future.
                   </p>
                 </div>

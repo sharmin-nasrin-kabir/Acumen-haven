@@ -139,7 +139,7 @@ export default function TreePlantingPage() {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-                How it's connected to climate change:
+                How it&apos;s connected to climate change:
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
                 Tree planting and urban greening are powerful tools in the fight against climate change. One of the most
@@ -210,11 +210,11 @@ export default function TreePlantingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {climateBenefits.map((benefit, index) => {
+            {climateBenefits.map((benefit) => {
               const IconComponent = benefit.icon
               return (
                 <Card
-                  key={index}
+                  key={benefit.title}
                   className={`p-8 rounded-3xl border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${benefit.bgColor}`}
                 >
                   <CardContent className="p-0">
@@ -245,15 +245,15 @@ export default function TreePlantingPage() {
               <Calendar className="h-5 w-5 mr-2" />
               Upcoming Projects
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What's Coming Next</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What&apos;s Coming Next</h2>
           </div>
 
           <div className="grid gap-8">
-            {upcomingProjects.map((project, index) => {
+            {upcomingProjects.map((project) => {
               const IconComponent = project.icon
               return (
                 <Card
-                  key={index}
+                  key={project.title}
                   className={`p-8 rounded-3xl border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 ${project.bgColor}`}
                 >
                   <CardContent className="p-0">

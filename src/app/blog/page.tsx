@@ -101,7 +101,7 @@ export default async function BlogPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-slate-600 mb-6">
-                    We're working on bringing you inspiring stories from our community. Check back soon for updates!
+                    We&apos;re working on bringing you inspiring stories from our community. Check back soon for updates!
                   </p>
                   <Button
                     variant="outline"
@@ -123,7 +123,6 @@ export default async function BlogPage() {
                       <Image
                         src={
                           publishedBlogs[0].featured_image ||
-                          "/placeholder.svg?height=400&width=600&query=climate action featured story" ||
                           "/placeholder.svg"
                         }
                         alt={publishedBlogs[0].title}
@@ -275,7 +274,7 @@ export default async function BlogPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-600 mb-6">
-                  As we launch our programs and expand our impact, we'll be sharing more stories from our community of
+                  As we launch our programs and expand our impact, we&apos;ll be sharing more stories from our community of
                   changemakers. Check back regularly for updates!
                 </p>
                 <Button

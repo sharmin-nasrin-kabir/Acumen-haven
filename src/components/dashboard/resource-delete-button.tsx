@@ -67,7 +67,7 @@ export function ResourceDeleteButton({ resourceId, resourceTitle }: ResourceDele
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the resource "{resourceTitle}". This action cannot be undone.
+            This will permanently delete the resource &quot;{resourceTitle}&quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

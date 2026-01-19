@@ -45,12 +45,11 @@ export default function DonatePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {donationTiers.map((tier, index) => (
+            {donationTiers.map((tier) => (
               <Card
                 key={tier.amount}
-                className={`group rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden card-hover cursor-pointer bg-white text-center ${
-                  selectedAmount === tier.amount ? "ring-4 ring-emerald-500 shadow-2xl" : ""
-                }`}
+                className={`group rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden card-hover cursor-pointer bg-white text-center ${selectedAmount === tier.amount ? "ring-4 ring-emerald-500 shadow-2xl" : ""
+                  }`}
                 onClick={() => setSelectedAmount(tier.amount)}
               >
                 <CardHeader>
@@ -173,7 +172,7 @@ export default function DonatePage() {
                 </Button>
 
                 <p className="text-sm text-slate-600 text-center">
-                  Your donation is secure and encrypted. You'll receive a receipt via email.
+                  Your donation is secure and encrypted. You&apos;ll receive a receipt via email.
                 </p>
               </CardContent>
             </Card>

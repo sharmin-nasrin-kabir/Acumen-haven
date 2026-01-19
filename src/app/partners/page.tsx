@@ -75,7 +75,7 @@ export default function PartnersPage() {
             Partners & Collaborations
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            We believe in the power of collaboration. Together with our partners, we're building a global network of
+            We believe in the power of collaboration. Together with our partners, we&apos;re building a global network of
             changemakers working toward a sustainable and just future.
           </p>
         </div>
@@ -95,7 +95,7 @@ export default function PartnersPage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 mb-16">
-            {partnershipTypes.map((type, index) => {
+            {partnershipTypes.map((type) => {
               const IconComponent = type.icon
               return (
                 <Card
@@ -162,11 +162,11 @@ export default function PartnersPage() {
               Our Network
             </Badge>
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6">Our Current Partners</h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">Organizations we're proud to work with</p>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">Organizations we&apos;re proud to work with</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {currentPartners.map((partner, index) => (
+            {currentPartners.map((partner) => (
               <Card
                 key={partner.name}
                 className="group rounded-3xl border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden card-hover bg-white"
@@ -193,8 +193,8 @@ export default function PartnersPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-600 mb-6">
-                  We're actively seeking new partnerships to expand our reach and impact. As we launch our programs in
-                  Fall 2025, we'll be announcing more exciting collaborations.
+                  We&apos;re actively seeking new partnerships to expand our reach and impact. As we launch our programs in
+                  Fall 2025, we&apos;ll be announcing more exciting collaborations.
                 </p>
                 <Button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
@@ -240,7 +240,7 @@ export default function PartnersPage() {
                 icon: Target,
               },
               { step: "4", title: "Launch", description: "We begin our collaboration and create impact", icon: Heart },
-            ].map((item, index) => {
+            ].map((item) => {
               const IconComponent = item.icon
               return (
                 <Card
@@ -274,7 +274,7 @@ export default function PartnersPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-700 mb-6 text-lg">
-                  Whether you're an educational institution, youth organization, NGO, or business, we'd love to explore
+                  Whether you&apos;re an educational institution, youth organization, NGO, or business, we&apos;d love to explore
                   how we can collaborate to create positive change.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

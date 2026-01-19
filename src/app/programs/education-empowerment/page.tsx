@@ -61,9 +61,9 @@ export default function EducationEmpowermentPage() {
       description:
         "A monthly school-based program that brings parents and children together to combat screen addiction, foster moral and creative growth, and build environmental awareness.",
       goals: [
-        "Reduce children's dependency on screens through creative and eco-friendly alternatives",
+        "Reduce children&apos;s dependency on screens through creative and eco-friendly alternatives",
         "Equip parents with tools to guide moral, intellectual, and environmental development",
-        "Foster family-based climate action by addressing technology's environmental impact",
+        "Foster family-based climate action by addressing technology&apos;s environmental impact",
         "Cultivate a generation of ethical, curious, and climate-conscious students",
         "Strengthen school communities through active family participation and shared learning",
       ],
@@ -158,7 +158,7 @@ export default function EducationEmpowermentPage() {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-                How it's connected to climate change:
+                How it&apos;s connected to climate change:
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
                 Education is the foundation of empowerment. When people, especially youth, understand the causes,
@@ -168,7 +168,7 @@ export default function EducationEmpowermentPage() {
               </p>
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
                 Empowerment turns awareness into action. Empowered students, teachers, and citizens can organize,
-                innovate, and advocate for sustainable solutions—whether it's reducing plastic use, improving
+                innovate, and advocate for sustainable solutions—whether it&apos;s reducing plastic use, improving
                 transportation systems, or promoting renewable energy.
               </p>
               <p className="text-lg text-slate-700 leading-relaxed">
@@ -182,7 +182,7 @@ export default function EducationEmpowermentPage() {
                 🌱 Why is Acumen Haven working in this area?
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                Acumen Haven believes climate change is not just an environmental issue; it's a justice issue. It
+                Acumen Haven believes climate change is not just an environmental issue; it&apos;s a justice issue. It
                 affects the most vulnerable communities first and hardest. By helping individuals understand their
                 carbon footprints—from daily travel to energy use—our programs turn abstract climate issues into
                 concrete, actionable change. In Bangladesh and beyond, we see a need for grassroots education that
@@ -222,15 +222,15 @@ export default function EducationEmpowermentPage() {
               <Calendar className="h-5 w-5 mr-2" />
               Upcoming Projects
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What's Coming Next</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">What&apos;s Coming Next</h2>
           </div>
 
           <div className="grid gap-8">
-            {upcomingProjects.map((project, index) => {
+            {upcomingProjects.map((project) => {
               const IconComponent = project.icon
               return (
                 <Card
-                  key={index}
+                  key={project.title}
                   className={`p-8 rounded-3xl border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 ${project.bgColor}`}
                 >
                   <CardContent className="p-0">
@@ -281,11 +281,11 @@ export default function EducationEmpowermentPage() {
           </div>
 
           <div className="space-y-8">
-            {ongoingProjects.map((project, index) => {
+            {ongoingProjects.map((project) => {
               const IconComponent = project.icon
               return (
                 <Card
-                  key={index}
+                  key={project.title}
                   className={`p-8 rounded-3xl border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 ${project.bgColor}`}
                 >
                   <CardContent className="p-0">

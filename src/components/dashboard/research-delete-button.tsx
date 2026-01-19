@@ -67,7 +67,7 @@ export function ResearchDeleteButton({ researchId, researchTitle }: ResearchDele
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the research "{researchTitle}". This action cannot be undone.
+            This will permanently delete the research &quot;{researchTitle}&quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
