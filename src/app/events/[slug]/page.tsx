@@ -107,13 +107,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="relative overflow-hidden rounded-2xl">
+              <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-2xl">
                 <Image
                   src={event.banner_image || "/placeholder.svg?height=400&width=800&text=Event+Banner"}
                   alt={event.title}
-                  width={800}
-                  height={400}
-                  className="w-full h-64 md:h-80 object-cover"
+                  fill
+                  className="object-cover"
+                  priority
                   style={{
                     objectPosition: event.banner_position || 'center center'
                   }}
@@ -152,13 +152,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                     <h2 className="text-2xl font-bold text-slate-800">Photo Gallery</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {event.gallery_images.map((imageUrl, index) => (
-                        <div key={index} className="relative overflow-hidden rounded-lg">
+                        <div key={index} className="relative aspect-[4/3] overflow-hidden rounded-lg">
                           <Image
                             src={imageUrl || "/placeholder.svg?height=200&width=300&query=gallery image"}
                             alt={`${event.title} gallery image ${index + 1}`}
-                            width={300}
-                            height={200}
-                            className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                       ))}

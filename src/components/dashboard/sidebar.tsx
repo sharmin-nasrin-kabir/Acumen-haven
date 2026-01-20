@@ -36,7 +36,7 @@ const userNavigation = [
 
 const adminNavigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Events", href: "/admin/events", icon: Calendar },
+  { name: "Events Engine", href: "/admin/events", icon: Calendar },
   { name: "Resources", href: "/admin/resources", icon: Database },
   { name: "Research", href: "/admin/research", icon: BookOpen },
   { name: "Blog Approval", href: "/admin/blogs", icon: CheckSquare },
