@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Download, FileText, BookOpen, Users, Shield, Camera, Award, Lightbulb, Target, Globe } from "lucide-react"
+import { Download, FileText, BookOpen, Users, Shield, Award, Lightbulb, Target, Globe } from "lucide-react"
 import CountUp from "@/components/CountUp"
 
 export default function ResourcesPage() {
@@ -74,7 +74,7 @@ export default function ResourcesPage() {
             Free resources for schools, teachers, youth organizations, and changemakers. Everything you need to start
             your own climate action initiatives.
           </p>
-          
+
           {/* Animated Statistics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             <div className="text-center">
@@ -162,7 +162,7 @@ export default function ResourcesPage() {
                 Coming Soon
               </Badge>
               <h3 className="text-3xl font-bold text-slate-900 mb-6">Additional Resources</h3>
-              
+
               {/* Coming Soon Stats */}
               <div className="flex justify-center gap-6 mb-6">
                 <div className="text-center">
@@ -250,7 +250,7 @@ export default function ResourcesPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-600 mb-6">
-                  Can't find what you're looking for? Let us know what resources would be helpful for your climate
+                  Can&apos;t find what you&apos;re looking for? Let us know what resources would be helpful for your climate
                   action initiatives.
                 </p>
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">

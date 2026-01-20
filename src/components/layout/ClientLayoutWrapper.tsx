@@ -4,6 +4,7 @@ import type React from "react"
 
 import { usePathname } from "next/navigation"
 import Layout from "@/components/layout/Layout"
+import { Toaster } from "sonner"
 
 // <CHANGE> Added function to check if route should exclude main website layout
 function shouldExcludeLayout(pathname: string) {
@@ -14,8 +15,18 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   const pathname = usePathname()
 
   if (shouldExcludeLayout(pathname)) {
-    return <>{children}</>
+    return (
+      <>
+        {children}
+        <Toaster />
+      </>
+    )
   }
 
-  return <Layout>{children}</Layout>
+  return (
+    <Layout>
+      {children}
+      <Toaster />
+    </Layout>
+  )
 }

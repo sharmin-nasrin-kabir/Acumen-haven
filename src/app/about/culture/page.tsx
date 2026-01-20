@@ -28,7 +28,7 @@ export default function CulturePage() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-4xl mx-auto text-center mb-16">
             <p className="text-lg text-slate-600 mb-6 leading-relaxed">
-              At Acumen Haven, culture isn't just what we believe — it's how we show up. How we communicate, give
+              At Acumen Haven, culture isn&apos;t just what we believe — it&apos;s how we show up. How we communicate, give
               feedback, handle conflict, and celebrate effort defines everything we do.
             </p>
             <Button
@@ -110,7 +110,7 @@ export default function CulturePage() {
                   </div>
                   <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                     <h4 className="font-bold text-slate-900 mb-2">No Gossip</h4>
-                    <p className="text-slate-600">We don't gossip, ghost, or manipulate.</p>
+                    <p className="text-slate-600">We don&apos;t gossip, ghost, or manipulate.</p>
                   </div>
                   <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                     <h4 className="font-bold text-slate-900 mb-2">Create Space</h4>

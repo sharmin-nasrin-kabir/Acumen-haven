@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast"
 import { ArrowLeft, Save, Eye, X } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Event {
   id?: string
@@ -30,6 +31,11 @@ interface Event {
   registration_link?: string
   is_published: boolean
   is_featured: boolean
+  contact_email?: string
+  social_facebook?: string
+  social_twitter?: string
+  social_instagram?: string
+  social_linkedin?: string
 }
 
 interface EventFormProps {
@@ -58,6 +64,11 @@ export function EventForm({ event }: EventFormProps) {
     registration_link: event?.registration_link || "",
     is_published: event?.is_published || false,
     is_featured: event?.is_featured || false,
+    contact_email: (event as any)?.contact_email || "",
+    social_facebook: (event as any)?.social_facebook || "",
+    social_twitter: (event as any)?.social_twitter || "",
+    social_instagram: (event as any)?.social_instagram || "",
+    social_linkedin: (event as any)?.social_linkedin || "",
   })
 
   const uploadImage = async (file: File): Promise<string> => {
@@ -270,15 +281,73 @@ export function EventForm({ event }: EventFormProps) {
             </div>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="contact_email">Contact Email</Label>
+              <Input
+                id="contact_email"
+                type="email"
+                value={formData.contact_email}
+                onChange={(e) => handleInputChange("contact_email", e.target.value)}
+                placeholder="info@acumenhaven.org"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="social_facebook">Facebook URL</Label>
+              <Input
+                id="social_facebook"
+                value={formData.social_facebook}
+                onChange={(e) => handleInputChange("social_facebook", e.target.value)}
+                placeholder="https://facebook.com/..."
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="social_twitter">Twitter URL</Label>
+              <Input
+                id="social_twitter"
+                value={formData.social_twitter}
+                onChange={(e) => handleInputChange("social_twitter", e.target.value)}
+                placeholder="https://twitter.com/..."
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="social_instagram">Instagram URL</Label>
+              <Input
+                id="social_instagram"
+                value={formData.social_instagram}
+                onChange={(e) => handleInputChange("social_instagram", e.target.value)}
+                placeholder="https://instagram.com/..."
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="social_linkedin">LinkedIn URL</Label>
+              <Input
+                id="social_linkedin"
+                value={formData.social_linkedin}
+                onChange={(e) => handleInputChange("social_linkedin", e.target.value)}
+                placeholder="https://linkedin.com/..."
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="banner_image">Banner Image *</Label>
             {formData.banner_image && !bannerImage && (
               <div className="mb-2">
-                <img
-                  src={formData.banner_image || "/placeholder.svg"}
-                  alt="Current banner"
-                  className="w-32 h-20 object-cover rounded border"
-                />
+                <div className="relative w-32 h-20">
+                  <Image
+                    src={formData.banner_image || "/placeholder.svg"}
+                    alt="Current banner"
+                    fill
+                    className="object-cover rounded border"
+                  />
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">Current banner image</p>
               </div>
             )}
@@ -309,11 +378,14 @@ export function EventForm({ event }: EventFormProps) {
                 <div className="grid grid-cols-4 gap-2">
                   {formData.gallery_images.map((imageUrl, index) => (
                     <div key={index} className="relative">
-                      <img
-                        src={imageUrl || "/placeholder.svg"}
-                        alt={`Gallery ${index + 1}`}
-                        className="w-full h-16 object-cover rounded border"
-                      />
+                      <div className="relative w-full h-16">
+                        <Image
+                          src={imageUrl || "/placeholder.svg"}
+                          alt={`Gallery ${index + 1}`}
+                          fill
+                          className="object-cover rounded border"
+                        />
+                      </div>
                       <Button
                         type="button"
                         variant="destructive"

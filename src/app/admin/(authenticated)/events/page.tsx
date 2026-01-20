@@ -176,6 +176,9 @@ export default function EventsAdminPage() {
                                 <Badge variant={event.is_published ? "default" : "secondary"} className={event.is_published ? "bg-emerald-500 hover:bg-emerald-600" : "bg-slate-500 text-white"}>
                                     {event.is_published ? "Published" : "Draft"}
                                 </Badge>
+                                <Badge variant="outline" className={event.status === "Upcoming" ? "bg-blue-50 text-blue-600 border-blue-200" : "bg-slate-50 text-slate-600 border-slate-200"}>
+                                    {event.status}
+                                </Badge>
                                 {event.is_featured && (
                                     <Badge variant="outline" className="bg-amber-50 text-amber-600 border-amber-200">
                                         Featured

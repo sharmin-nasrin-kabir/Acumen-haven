@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,8 +27,7 @@ import {
     Scale,
     TreePine,
     Coins,
-    Utensils,
-    CloudRain
+    Utensils
 } from "lucide-react"
 
 const AVAILABLE_ICONS = [
@@ -49,6 +48,8 @@ const AVAILABLE_ICONS = [
     { name: "Utensils", icon: Utensils },
 ]
 
+const supabase = createClient()
+
 export default function SDGGoalsPage() {
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
@@ -56,13 +57,7 @@ export default function SDGGoalsPage() {
     const [success, setSuccess] = useState<string | null>(null)
     const [sdgs, setSdgs] = useState<any[]>([])
 
-    const supabase = createClient()
-
-    useEffect(() => {
-        fetchSdgs()
-    }, [])
-
-    async function fetchSdgs() {
+    const fetchSdgs = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('sdg_alignment')
@@ -75,7 +70,11 @@ export default function SDGGoalsPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        fetchSdgs()
+    }, [fetchSdgs])
 
     const addSdg = () => {
         setSdgs([...sdgs, {
@@ -112,10 +111,14 @@ export default function SDGGoalsPage() {
         setSaving(true)
         setError(null)
         try {
-            const dataToSave = sdgs.map(({ isNew, ...rest }, index) => ({
-                ...rest,
-                order_index: index + 1
-            }))
+            const dataToSave = sdgs.map((sdg, index) => {
+                const rest = { ...sdg }
+                delete rest.isNew
+                return {
+                    ...rest,
+                    order_index: index + 1
+                }
+            })
             const { error } = await supabase.from('sdg_alignment').upsert(dataToSave)
             if (error) throw error
             setSuccess("SDG Alignment updated!")
@@ -154,7 +157,7 @@ export default function SDGGoalsPage() {
             {success && <Alert className="bg-orange-50 text-orange-700 border-orange-200"><AlertDescription>{success}</AlertDescription></Alert>}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sdgs.map((sdg, index) => (
+                {sdgs.map((sdg) => (
                     <Card key={sdg.id} className="border-slate-200/60 shadow-sm relative group bg-white border-0">
                         <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600 h-8 w-8 p-0" onClick={() => deleteSdg(sdg.id, sdg.isNew)}>
@@ -196,8 +199,8 @@ export default function SDGGoalsPage() {
                                             type="button"
                                             onClick={() => updateSdg(sdg.id, 'icon_name', item.name)}
                                             className={`p-2 rounded-md transition-all flex items-center justify-center ${sdg.icon_name === item.name
-                                                    ? "bg-orange-600 text-white shadow-md shadow-orange-200"
-                                                    : "bg-white text-slate-400 hover:bg-orange-50 hover:text-orange-600 border border-slate-100"
+                                                ? "bg-orange-600 text-white shadow-md shadow-orange-200"
+                                                : "bg-white text-slate-400 hover:bg-orange-50 hover:text-orange-600 border border-slate-100"
                                                 }`}
                                             title={item.name}
                                         >

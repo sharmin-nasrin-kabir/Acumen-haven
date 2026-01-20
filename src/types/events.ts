@@ -8,12 +8,19 @@ export interface Event {
   chapter: "US" | "Bangladesh"
   category: string | null
   banner_image: string | null
+  banner_position: string | null
   gallery_images: string[] | null
   registration_link: string | null
   youtube_url: string | null
   slug: string | null
   is_featured: boolean
   is_published: boolean
+  status: "Upcoming" | "Past"
+  contact_email: string | null
+  social_facebook: string | null
+  social_twitter: string | null
+  social_instagram: string | null
+  social_linkedin: string | null
   created_at: string
   updated_at: string
 }
@@ -25,6 +32,7 @@ export interface CreateEventData {
   time?: string
   location?: string
   chapter: "US" | "Bangladesh"
+  status: "Upcoming" | "Past"
   category?: string
   banner_image?: string
   gallery_images?: string[]
@@ -32,6 +40,11 @@ export interface CreateEventData {
   youtube_url?: string
   is_featured?: boolean
   is_published?: boolean
+  contact_email?: string
+  social_facebook?: string
+  social_twitter?: string
+  social_instagram?: string
+  social_linkedin?: string
 }
 
 export interface UpdateEventData extends Partial<CreateEventData> {

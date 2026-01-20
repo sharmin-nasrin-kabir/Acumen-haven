@@ -2,7 +2,7 @@ import { createClient } from "./supabase/server"
 import { cache } from "react"
 
 // Revalidation time in seconds (e.g., 60 seconds)
-const REVALIDATE_TIME = 60
+
 
 /**
  * Shared function to fetch data from Supabase with high performance

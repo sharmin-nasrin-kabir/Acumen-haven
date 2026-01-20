@@ -67,7 +67,7 @@ export function BlogDeleteButton({ blogId, blogTitle }: BlogDeleteButtonProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete your blog post "{blogTitle}". This action cannot be undone.
+            This will permanently delete your blog post &quot;{blogTitle}&quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

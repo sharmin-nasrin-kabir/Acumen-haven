@@ -1,14 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, ChangeEvent } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Plus, Trash2, GripVertical, Image as ImageIcon, Link as LinkIcon } from "lucide-react"
+import { Loader2, Plus, Trash2, Image as ImageIcon, Link as LinkIcon } from "lucide-react"
 import Image from "next/image"
+
+const supabase = createClient()
 
 export default function HeroSliderPage() {
     const [loading, setLoading] = useState(true)
@@ -17,13 +19,7 @@ export default function HeroSliderPage() {
     const [success, setSuccess] = useState<string | null>(null)
     const [slides, setSlides] = useState<any[]>([])
 
-    const supabase = createClient()
-
-    useEffect(() => {
-        fetchSlides()
-    }, [])
-
-    async function fetchSlides() {
+    const fetchSlides = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('hero_slides')
@@ -37,7 +33,11 @@ export default function HeroSliderPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        fetchSlides()
+    }, [fetchSlides])
 
     const addSlide = () => {
         const newSlide = {
@@ -94,7 +94,7 @@ export default function HeroSliderPage() {
         return data.url
     }
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, slideId: string) => {
+    const handleFileChange = async (e: ChangeEvent<HTMLInputElement>, slideId: string) => {
         const file = e.target.files?.[0]
         if (!file) return
 
@@ -117,10 +117,14 @@ export default function HeroSliderPage() {
 
         try {
             // Remove 'isNew' flag and send to Supabase
-            const dataToSave = slides.map(({ isNew, ...rest }, index) => ({
-                ...rest,
-                order_index: index + 1
-            }))
+            const dataToSave = slides.map((slide, index) => {
+                const rest = { ...slide }
+                delete rest.isNew
+                return {
+                    ...rest,
+                    order_index: index + 1
+                }
+            })
 
             const { error } = await supabase.from('hero_slides').upsert(dataToSave)
             if (error) throw error

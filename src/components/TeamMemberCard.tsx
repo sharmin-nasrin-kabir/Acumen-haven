@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { Mail, Linkedin, Twitter } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
@@ -77,7 +77,7 @@ export default function TeamMemberCard({ member, variant = "default" }: TeamMemb
 
           <CardContent className="px-10 py-8 relative z-10 text-center">
             <p className="text-slate-500 leading-relaxed font-medium text-sm mb-8">
-              "{member.description}"
+              &quot;{member.description}&quot;
             </p>
 
             {/* Premium Glass Social Bar */}

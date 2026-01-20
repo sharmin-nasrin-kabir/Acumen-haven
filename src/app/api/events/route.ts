@@ -8,12 +8,14 @@ export async function GET(request: NextRequest) {
     const supabase = await createServerSupabaseClient()
     const { searchParams } = new URL(request.url)
 
-    // Build query with optional filters
-    let query = supabase.from("events").select("*").eq("is_published", true).order("date", { ascending: true })
+    // Build query - TEMPORARILY show all events (RLS is off anyway)
+    console.log('📡 API: Fetching events...')
+    let query = supabase.from("events").select("*").order("date", { ascending: true })
 
     // Filter by chapter if specified
     const chapter = searchParams.get("chapter")
     if (chapter && (chapter === "US" || chapter === "Bangladesh")) {
+      console.log('🔍 Filtering by chapter:', chapter)
       query = query.eq("chapter", chapter)
     }
 
@@ -34,12 +36,18 @@ export async function GET(request: NextRequest) {
 
     const { data: events, error } = await query
 
+    console.log('📊 API: Events fetched:', {
+      count: events?.length || 0,
+      error: error?.message,
+      firstEvent: events?.[0]
+    })
+
     if (error) {
       console.error("Error fetching events:", error)
-      return NextResponse.json({ error: "Failed to fetch events" }, { status: 500 })
+      return NextResponse.json({ error: "Failed to fetch events", details: error.message }, { status: 500 })
     }
 
-    return NextResponse.json({ events })
+    return NextResponse.json({ events: events || [] })
   } catch (error) {
     console.error("Unexpected error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
@@ -53,13 +61,16 @@ export async function POST(request: NextRequest) {
     const body: CreateEventData = await request.json()
 
     // Validate required fields
-    if (!body.title || !body.date || !body.chapter) {
-      return NextResponse.json({ error: "Missing required fields: title, date, chapter" }, { status: 400 })
+    if (!body.title || !body.date || !body.chapter || !body.status) {
+      return NextResponse.json({ error: "Missing required fields: title, date, chapter, status" }, { status: 400 })
     }
 
-    // Validate chapter value
+    // Validate chapter/status values
     if (body.chapter !== "US" && body.chapter !== "Bangladesh") {
       return NextResponse.json({ error: 'Chapter must be either "US" or "Bangladesh"' }, { status: 400 })
+    }
+    if (body.status !== "Upcoming" && body.status !== "Past") {
+      return NextResponse.json({ error: 'Status must be either "Upcoming" or "Past"' }, { status: 400 })
     }
 
     const { data: event, error } = await supabase

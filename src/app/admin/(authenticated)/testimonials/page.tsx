@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, ChangeEvent } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,6 +16,8 @@ const DEFAULT_AVATARS = {
     FEMALE: "default:female"
 }
 
+const supabase = createClient()
+
 export default function TestimonialsPage() {
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
@@ -23,13 +25,7 @@ export default function TestimonialsPage() {
     const [success, setSuccess] = useState<string | null>(null)
     const [testimonials, setTestimonials] = useState<any[]>([])
 
-    const supabase = createClient()
-
-    useEffect(() => {
-        fetchTestimonials()
-    }, [])
-
-    async function fetchTestimonials() {
+    const fetchTestimonials = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('testimonials')
@@ -42,7 +38,11 @@ export default function TestimonialsPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        fetchTestimonials()
+    }, [fetchTestimonials])
 
     const addTestimonial = () => {
         setTestimonials([...testimonials, {
@@ -93,7 +93,7 @@ export default function TestimonialsPage() {
         return data.url
     }
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, testId: string) => {
+    const handleFileChange = async (e: ChangeEvent<HTMLInputElement>, testId: string) => {
         const file = e.target.files?.[0]
         if (!file) return
 
@@ -113,10 +113,14 @@ export default function TestimonialsPage() {
         setSaving(true)
         setError(null)
         try {
-            const dataToSave = testimonials.map(({ isNew, ...rest }, index) => ({
-                ...rest,
-                order_index: index + 1
-            }))
+            const dataToSave = testimonials.map((t, index) => {
+                const rest = { ...t }
+                delete rest.isNew
+                return {
+                    ...rest,
+                    order_index: index + 1
+                }
+            })
             const { error } = await supabase.from('testimonials').upsert(dataToSave)
             if (error) throw error
             setSuccess("Voices of Change updated!")
@@ -168,7 +172,7 @@ export default function TestimonialsPage() {
             {success && <Alert className="bg-blue-50 text-blue-700 border-blue-200"><AlertDescription>{success}</AlertDescription></Alert>}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {testimonials.map((t, index) => (
+                {testimonials.map((t) => (
                     <Card key={t.id} className="border-slate-200/60 shadow-sm relative group overflow-hidden bg-white">
                         <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600 h-8 w-8 p-0" onClick={() => deleteTestimonial(t.id, t.isNew)}>

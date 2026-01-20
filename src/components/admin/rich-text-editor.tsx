@@ -29,7 +29,7 @@ import { useEffect } from 'react'
 
 interface RichTextEditorProps {
     content: string
-    onChange: (value: string) => void
+    onChange: (value: string) => void // eslint-disable-line no-unused-vars
 }
 
 export function RichTextEditor({ content, onChange }: RichTextEditorProps) {

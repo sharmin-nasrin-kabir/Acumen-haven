@@ -29,9 +29,23 @@ interface Blog {
   } | null
 }
 
+interface RelatedBlog {
+  id: string
+  title: string
+  excerpt: string
+  featured_image: string | null
+  slug: string | null
+  published_at: string | null
+  created_at: string
+  profiles: {
+    first_name: string | null
+    last_name: string | null
+  } | null
+}
+
 export default function BlogDetailPage({ params }: { params: { slug: string } }) {
   const [blog, setBlog] = useState<Blog | null>(null)
-  const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([])
+  const [relatedBlogs, setRelatedBlogs] = useState<RelatedBlog[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
@@ -73,7 +87,11 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           throw blogError
         }
 
-        setBlog(blogData)
+        if (Array.isArray(blogData.profiles)) {
+          // @ts-ignore
+          blogData.profiles = blogData.profiles[0]
+        }
+        setBlog(blogData as unknown as Blog)
 
         // Fetch related blogs
         const { data: relatedData, error: relatedError } = await supabase
@@ -100,7 +118,18 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           console.error("Error fetching related blogs:", relatedError.message, relatedError.details, relatedError.hint)
         }
 
-        setRelatedBlogs(relatedData || [])
+        if (relatedData) {
+          const formattedRelated = relatedData.map(item => {
+            if (Array.isArray(item.profiles)) {
+              // @ts-ignore
+              item.profiles = item.profiles[0]
+            }
+            return item
+          })
+          setRelatedBlogs(formattedRelated as unknown as RelatedBlog[])
+        } else {
+          setRelatedBlogs([])
+        }
       } catch (err) {
         console.error("Catch block error:", err)
         setError(err instanceof Error ? err.message : "Failed to load blog")
@@ -122,7 +151,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           text: blog?.excerpt,
           url: url,
         })
-      } catch (err) {
+      } catch {
         // Fallback to clipboard
         await navigator.clipboard.writeText(url)
         setCopied(true)
@@ -254,10 +283,9 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                     <Image
                       src={
                         relatedBlog.featured_image ||
-                        "/placeholder.svg?height=300&width=400&query=blog post" ||
-                        "/placeholder.svg"
+                        "/placeholder.svg?height=300&width=400&query=blog post"
                       }
-                      alt={relatedBlog.title}
+                      alt={relatedBlog.title || "Blog Post"}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />

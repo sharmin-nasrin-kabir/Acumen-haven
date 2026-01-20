@@ -67,7 +67,7 @@ export function ContactDeleteButton({ submissionId, submissionName }: ContactDel
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the message from "{submissionName}". This action cannot be undone.
+            This will permanently delete the message from &quot;{submissionName}&quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

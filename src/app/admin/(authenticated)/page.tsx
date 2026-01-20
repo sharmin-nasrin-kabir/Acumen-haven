@@ -113,7 +113,7 @@ export default async function AdminDashboardPage() {
                     <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl" />
                     <div className="relative z-10">
                         <h3 className="text-xl font-bold mb-4 opacity-80 italic italic">Quick Tip</h3>
-                        <p className="text-lg font-medium leading-relaxed">System logs show high engagement on current blogs. Consider reviewing 'Blog Approvals' for new entries.</p>
+                        <p className="text-lg font-medium leading-relaxed">System logs show high engagement on current blogs. Consider reviewing &apos;Blog Approvals&apos; for new entries.</p>
                     </div>
                     <div className="relative z-10 pt-10">
                         <div className="h-1 w-20 bg-emerald-500 rounded-full mb-4" />

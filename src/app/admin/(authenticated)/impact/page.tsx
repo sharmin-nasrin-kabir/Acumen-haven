@@ -1,14 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, Plus, Trash2, TrendingUp, Save } from "lucide-react"
+
+const supabase = createClient()
 
 export default function ImpactStatsPage() {
     const [loading, setLoading] = useState(true)
@@ -17,13 +18,7 @@ export default function ImpactStatsPage() {
     const [success, setSuccess] = useState<string | null>(null)
     const [stats, setStats] = useState<any[]>([])
 
-    const supabase = createClient()
-
-    useEffect(() => {
-        fetchStats()
-    }, [])
-
-    async function fetchStats() {
+    const fetchStats = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('impact_stats')
@@ -37,7 +32,11 @@ export default function ImpactStatsPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        fetchStats()
+    }, [fetchStats])
 
     const addStat = () => {
         const newStat = {
@@ -74,10 +73,14 @@ export default function ImpactStatsPage() {
         setSaving(true)
         setError(null)
         try {
-            const dataToSave = stats.map(({ isNew, ...rest }, index) => ({
-                ...rest,
-                order_index: index + 1
-            }))
+            const dataToSave = stats.map((stat, index) => {
+                const rest = { ...stat }
+                delete rest.isNew
+                return {
+                    ...rest,
+                    order_index: index + 1
+                }
+            })
             const { error } = await supabase.from('impact_stats').upsert(dataToSave)
             if (error) throw error
             setSuccess("Impact stats updated!")
@@ -111,7 +114,7 @@ export default function ImpactStatsPage() {
             {success && <Alert className="bg-emerald-50 text-emerald-700 border-emerald-200"><AlertDescription>{success}</AlertDescription></Alert>}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {stats.map((stat, index) => (
+                {stats.map((stat) => (
                     <Card key={stat.id} className="border-slate-200/60 shadow-sm relative group overflow-hidden">
                         <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600 h-8 w-8 p-0" onClick={() => deleteStat(stat.id, stat.isNew)}>

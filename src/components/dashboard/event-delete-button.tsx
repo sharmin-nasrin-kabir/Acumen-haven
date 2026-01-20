@@ -67,7 +67,7 @@ export function EventDeleteButton({ eventId, eventTitle }: EventDeleteButtonProp
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the event "{eventTitle}". This action cannot be undone.
+            This will permanently delete the event &quot;{eventTitle}&quot;. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -16,7 +16,7 @@ export default function MissionPage() {
           </Badge>
           <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-slate-900 mb-6">Mission & Vision</h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Our purpose, goals, and the future we're working toward together.
+            Our purpose, goals, and the future we&apos;re working toward together.
           </p>
         </div>
       </section>

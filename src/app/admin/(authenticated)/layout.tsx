@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { DashboardSidebar } from "@/components/dashboard/sidebar"
@@ -6,7 +7,7 @@ import { DashboardHeader } from "@/components/dashboard/header"
 export default async function AdminLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: ReactNode
 }) {
     const supabase = await createClient()
 

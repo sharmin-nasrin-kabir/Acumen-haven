@@ -67,7 +67,7 @@ export default function ContactPage() {
           </Badge>
           <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-slate-900 mb-6">Contact Us</h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Ready to partner, volunteer, or learn more? We'd love to hear from you.
+            Ready to partner, volunteer, or learn more? We&apos;d love to hear from you.
           </p>
         </div>
       </section>
@@ -81,7 +81,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle className="text-2xl font-bold">Get in Touch</CardTitle>
                 <CardDescription>
-                  Ready to partner, volunteer, or learn more? We'd love to hear from you.
+                  Ready to partner, volunteer, or learn more? We&apos;d love to hear from you.
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -37,8 +37,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const { id } = params
     const body: Partial<UpdateEventData> = await request.json()
 
-    // Remove id from body if present
-    const { id: _, ...updateData } = body
+    const updateData = { ...body }
+    delete updateData.id
 
     // Validate chapter if provided
     if (updateData.chapter && updateData.chapter !== "US" && updateData.chapter !== "Bangladesh") {

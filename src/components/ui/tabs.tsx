@@ -7,7 +7,7 @@ const Tabs = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     value?: string
-    onValueChange?: (value: string) => void
+    onValueChange?: (value: string) => void // eslint-disable-line no-unused-vars
     defaultValue?: string
   }
 >(({ className, value, onValueChange, defaultValue, ...props }, ref) => {
@@ -33,10 +33,10 @@ Tabs.displayName = "Tabs"
 
 const TabsContext = React.createContext<{
   value: string
-  onValueChange: (value: string) => void
+  onValueChange: (value: string) => void // eslint-disable-line no-unused-vars
 }>({
   value: "",
-  onValueChange: () => {},
+  onValueChange: () => { },
 })
 
 const TabsList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

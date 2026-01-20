@@ -2,14 +2,14 @@
 
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react'
+import { Upload, X, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { toast } from 'sonner'
 
 interface ImageDropzoneProps {
     images: string[]
-    onUpdate: (urls: string[]) => void
-    onUpload: (file: File) => Promise<string>
+    onUpdate: (urls: string[]) => void // eslint-disable-line no-unused-vars
+    onUpload: (file: File) => Promise<string> // eslint-disable-line no-unused-vars
     uploading: boolean
     label?: string
     maxFiles?: number

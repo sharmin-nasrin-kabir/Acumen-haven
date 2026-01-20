@@ -75,7 +75,7 @@ function EventCard({ event, isPast = false }: { event: Event; isPast?: boolean }
           asChild
           className="w-full group/btn bg-emerald-600 hover:bg-emerald-700 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-white"
         >
-          <Link href={`/events/${event.id}`}>
+          <Link href={`/events/${event.slug || event.id}`}>
             View Details
             <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
           </Link>
@@ -132,11 +132,10 @@ function EventSection({ events, title, isPast = false }: { events: Event[]; titl
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCurrentPage(page)}
-                    className={`w-10 rounded-2xl font-semibold ${
-                      currentPage === page
-                        ? "bg-emerald-600 hover:bg-emerald-700"
-                        : "bg-transparent border-2 border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300"
-                    }`}
+                    className={`w-10 rounded-2xl font-semibold ${currentPage === page
+                      ? "bg-emerald-600 hover:bg-emerald-700"
+                      : "bg-transparent border-2 border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300"
+                      }`}
                   >
                     {page}
                   </Button>
@@ -186,15 +185,14 @@ export default function EventsPage() {
     loadEvents()
   }, [])
 
-  const separateEventsByDate = (events: Event[]) => {
-    const now = new Date()
-    const upcoming = events.filter((event) => new Date(event.date) >= now)
-    const past = events.filter((event) => new Date(event.date) < now)
+  const separateEventsByStatus = (events: Event[]) => {
+    const upcoming = events.filter((event) => event.status === "Upcoming")
+    const past = events.filter((event) => event.status === "Past")
     return { upcoming, past }
   }
 
-  const { upcoming: usUpcoming, past: usPast } = separateEventsByDate(usEvents)
-  const { upcoming: bangladeshUpcoming, past: bangladeshPast } = separateEventsByDate(bangladeshEvents)
+  const { upcoming: usUpcoming, past: usPast } = separateEventsByStatus(usEvents)
+  const { upcoming: bangladeshUpcoming, past: bangladeshPast } = separateEventsByStatus(bangladeshEvents)
 
   return (
     <div className="w-full bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
