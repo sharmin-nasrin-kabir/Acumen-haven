@@ -10,6 +10,7 @@ export interface Event {
   banner_image: string | null
   gallery_images: string[] | null
   registration_link: string | null
+  youtube_url: string | null
   slug: string | null
   is_featured: boolean
   is_published: boolean
@@ -28,6 +29,7 @@ export interface CreateEventData {
   banner_image?: string
   gallery_images?: string[]
   registration_link?: string
+  youtube_url?: string
   is_featured?: boolean
   is_published?: boolean
 }
