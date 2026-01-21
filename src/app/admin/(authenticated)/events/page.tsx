@@ -20,7 +20,6 @@ import {
     Trash2,
     CheckCircle,
     XCircle,
-    Globe,
     Image as ImageIcon,
     Save,
     Sparkles
@@ -42,11 +41,10 @@ export default function EventsAdminPage() {
     const [loading, setLoading] = useState(true)
     const [savingSettings, setSavingSettings] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
-    const [filterChapter, setFilterChapter] = useState<string>("all")
     const [settings, setSettings] = useState({
         events_page_bg: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop",
         events_page_title: "Our Events",
-        events_page_description: "Join us in our mission to create positive change through community engagement, education, and climate action across the US and Bangladesh."
+        events_page_description: "Join us in our mission to create positive change through community engagement, education, and climate action."
     })
 
     const supabase = createClient()
@@ -194,10 +192,8 @@ export default function EventsAdminPage() {
     }
 
     const filteredEvents = events.filter(event => {
-        const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        return event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             event.location?.toLowerCase().includes(searchQuery.toLowerCase())
-        const matchesChapter = filterChapter === "all" || event.chapter === filterChapter
-        return matchesSearch && matchesChapter
     })
 
     if (loading) {
@@ -339,29 +335,7 @@ export default function EventsAdminPage() {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                    <div className="flex gap-2 bg-slate-50 p-1.5 rounded-2xl">
-                        <Button
-                            variant={filterChapter === "all" ? "default" : "ghost"}
-                            onClick={() => setFilterChapter("all")}
-                            className={filterChapter === "all" ? "bg-white text-emerald-700 shadow-sm rounded-xl font-bold" : "text-slate-500 rounded-xl font-bold"}
-                        >
-                            All
-                        </Button>
-                        <Button
-                            variant={filterChapter === "Bangladesh" ? "default" : "ghost"}
-                            onClick={() => setFilterChapter("Bangladesh")}
-                            className={filterChapter === "Bangladesh" ? "bg-white text-emerald-700 shadow-sm rounded-xl font-bold" : "text-slate-500 rounded-xl font-bold"}
-                        >
-                            Bangladesh
-                        </Button>
-                        <Button
-                            variant={filterChapter === "US" ? "default" : "ghost"}
-                            onClick={() => setFilterChapter("US")}
-                            className={filterChapter === "US" ? "bg-white text-emerald-700 shadow-sm rounded-xl font-bold" : "text-slate-500 rounded-xl font-bold"}
-                        >
-                            US
-                        </Button>
-                    </div>
+
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -415,10 +389,7 @@ export default function EventsAdminPage() {
                             </div>
 
                             <CardContent className="p-6 space-y-4">
-                                <div className="flex items-center text-xs font-black uppercase tracking-[0.2em] text-emerald-600">
-                                    <Globe className="h-3 w-3 mr-2" />
-                                    {event.chapter} Chapter
-                                </div>
+
 
                                 <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-1 leading-tight">
                                     {event.title}

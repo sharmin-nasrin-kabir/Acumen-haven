@@ -43,7 +43,6 @@ export function EventForm({ initialData }: EventFormProps) {
         date: "",
         time: "",
         location: "",
-        chapter: "Bangladesh",
         category: "",
         banner_image: "",
         gallery_images: [],
@@ -85,8 +84,8 @@ export function EventForm({ initialData }: EventFormProps) {
             body: data,
         })
 
-        if (!response.ok) throw new Error("Upload failed")
         const result = await response.json()
+        if (!response.ok) throw new Error(result.error || "Upload failed")
         return result.url
     }
 
@@ -96,8 +95,8 @@ export function EventForm({ initialData }: EventFormProps) {
             const url = await uploadImage(file as File)
             handleInputChange("banner_image", url)
             toast.success("Banner uploaded")
-        } catch {
-            toast.error("Failed to upload banner")
+        } catch (err: any) {
+            toast.error(err.message || "Failed to upload banner")
         } finally {
             setUploading(false)
         }
@@ -119,10 +118,7 @@ export function EventForm({ initialData }: EventFormProps) {
             toast.error("Event date is required")
             return
         }
-        if (!formData.chapter) {
-            toast.error("Organization chapter is required")
-            return
-        }
+
         if (!formData.status) {
             toast.error("Event status is required")
             return
@@ -517,24 +513,7 @@ export function EventForm({ initialData }: EventFormProps) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-6 space-y-6">
-                            <div className="space-y-2.5">
-                                <Label htmlFor="chapter" className="text-slate-700 font-semibold text-sm flex items-center gap-2">
-                                    <Globe className="h-4 w-4 text-emerald-600" /> Organization Chapter <span className="text-red-500">*</span>
-                                </Label>
-                                <Select
-                                    value={formData.chapter}
-                                    onValueChange={(v) => handleInputChange("chapter", v)}
-                                    required
-                                >
-                                    <SelectTrigger className="h-11 border-slate-200 focus:ring-emerald-500 rounded-xl bg-slate-50/30">
-                                        <SelectValue placeholder="Select Chapter" />
-                                    </SelectTrigger>
-                                    <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                                        <SelectItem value="Bangladesh" className="focus:bg-emerald-50 focus:text-emerald-700">Bangladesh</SelectItem>
-                                        <SelectItem value="US" className="focus:bg-emerald-50 focus:text-emerald-700">United States</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+
 
                             <div className="space-y-2.5">
                                 <Label htmlFor="status" className="text-slate-700 font-semibold text-sm flex items-center gap-2">

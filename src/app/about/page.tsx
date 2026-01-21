@@ -65,7 +65,7 @@ const volunteers = [
   {
     name: "Sarah Johnson",
     role: "Student Leader",
-    description: "Drives recycling initiatives and youth climate circles in the US chapter.",
+    description: "Drives recycling initiatives and youth climate circles.",
     initials: "SJ",
     bgColor: "bg-amber-500",
     image: "/placeholder-user.jpg",

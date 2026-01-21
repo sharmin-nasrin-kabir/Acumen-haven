@@ -40,10 +40,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const updateData = { ...body }
     delete updateData.id
 
-    // Validate chapter if provided
-    if (updateData.chapter && updateData.chapter !== "US" && updateData.chapter !== "Bangladesh") {
-      return NextResponse.json({ error: 'Chapter must be either "US" or "Bangladesh"' }, { status: 400 })
-    }
 
     const { data: event, error } = await supabase
       .from("events")

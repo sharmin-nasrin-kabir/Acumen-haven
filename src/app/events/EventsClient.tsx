@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -43,7 +42,9 @@ function EventCard({ event, isPast = false }: { event: Event; isPast?: boolean }
                 <CardTitle className="text-xl font-bold text-slate-800 group-hover:text-emerald-700 transition-colors">
                     {event.title}
                 </CardTitle>
-                <CardDescription className="text-slate-600 line-clamp-2">{event.description}</CardDescription>
+                <CardDescription className="text-slate-600 line-clamp-2">
+                    {event.description?.replace(/<[^>]*>/g, "")}
+                </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-3">
@@ -157,8 +158,7 @@ function EventSection({ events, title, isPast = false }: { events: Event[]; titl
 }
 
 interface EventsClientProps {
-    initialUsEvents: Event[];
-    initialBangladeshEvents: Event[];
+    initialEvents: Event[];
     settings: {
         events_page_bg: string;
         events_page_title: string;
@@ -166,15 +166,14 @@ interface EventsClientProps {
     };
 }
 
-export default function EventsClient({ initialUsEvents, initialBangladeshEvents, settings }: EventsClientProps) {
+export default function EventsClient({ initialEvents, settings }: EventsClientProps) {
     const separateEventsByStatus = (events: Event[]) => {
         const upcoming = events.filter((event) => event.status === "Upcoming")
         const past = events.filter((event) => event.status === "Past")
         return { upcoming, past }
     }
 
-    const { upcoming: bangladeshUpcoming, past: bangladeshPast } = separateEventsByStatus(initialBangladeshEvents)
-    const { upcoming: usUpcoming, past: usPast } = separateEventsByStatus(initialUsEvents)
+    const { upcoming, past } = separateEventsByStatus(initialEvents)
 
     return (
         <div className="w-full bg-slate-50">
@@ -218,42 +217,17 @@ export default function EventsClient({ initialUsEvents, initialBangladeshEvents,
             {/* Events Content */}
             <section className="pt-20 pb-20 md:pt-32 md:pb-32 px-4 sm:px-6 relative z-20">
                 <div className="max-w-7xl mx-auto">
-                    <Tabs defaultValue="bangladesh" className="w-full space-y-16">
-                        <div className="bg-white/40 backdrop-blur-sm rounded-3xl md:rounded-[3rem] p-4 md:p-10 border border-white/60">
-                            <div className="flex flex-col items-center mb-12">
-                                <TabsList className="inline-flex p-1 bg-white/60 backdrop-blur-xl shadow-lg rounded-2xl md:rounded-[2rem] border border-white/40 w-full max-w-md md:max-w-none md:w-auto">
-                                    <TabsTrigger
-                                        value="bangladesh"
-                                        className="flex-1 md:flex-none px-4 md:px-10 py-3 md:py-4 text-sm md:text-lg font-black rounded-xl md:rounded-[1.5rem] transition-all data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-600/20 uppercase tracking-widest"
-                                    >
-                                        Bangladesh
-                                    </TabsTrigger>
-                                    <TabsTrigger
-                                        value="us"
-                                        className="flex-1 md:flex-none px-4 md:px-10 py-3 md:py-4 text-sm md:text-lg font-black rounded-xl md:rounded-[1.5rem] transition-all data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-600/20 uppercase tracking-widest"
-                                    >
-                                        US
-                                    </TabsTrigger>
-                                </TabsList>
+                    <div className="bg-white/40 backdrop-blur-sm rounded-3xl md:rounded-[3rem] p-4 md:p-10 border border-white/60">
+                        <div className="space-y-24 mt-0 outline-none">
+                            <EventSection events={upcoming} title="Upcoming Events" isPast={false} />
+                            <div className="pt-16 border-t border-slate-200/60">
+                                <EventSection events={past} title="Success Stories & Past Events" isPast={true} />
                             </div>
-
-                            <TabsContent value="bangladesh" className="space-y-24 mt-0 outline-none">
-                                <EventSection events={bangladeshUpcoming} title="Upcoming in Bangladesh" isPast={false} />
-                                <div className="pt-16 border-t border-slate-200/60">
-                                    <EventSection events={bangladeshPast} title="Success Stories & Past Events" isPast={true} />
-                                </div>
-                            </TabsContent>
-
-                            <TabsContent value="us" className="space-y-24 mt-0 outline-none">
-                                <EventSection events={usUpcoming} title="Upcoming in United States" isPast={false} />
-                                <div className="pt-16 border-t border-slate-200/60">
-                                    <EventSection events={usPast} title="Success Stories & Past Events" isPast={true} />
-                                </div>
-                            </TabsContent>
                         </div>
-                    </Tabs>
+                    </div>
                 </div>
             </section>
+
 
             <style jsx global>{`
         @keyframes rgb-text {

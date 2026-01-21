@@ -36,8 +36,8 @@ export function ImageDropzone({
             const urls = await Promise.all(acceptedFiles.map(onUpload))
             onUpdate([...images, ...urls])
             toast.success(`${urls.length} images uploaded`)
-        } catch {
-            toast.error("Failed to upload some images")
+        } catch (err: any) {
+            toast.error(err.message || "Failed to upload some images")
         }
     }, [images, onUpdate, onUpload, maxFiles])
 

@@ -10,6 +10,16 @@ cloudinary.config({
 
 export async function POST(request: NextRequest) {
   try {
+    // Check for required environment variables
+    if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
+      !process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY ||
+      !process.env.CLOUDINARY_API_SECRET) {
+      console.error("Missing Cloudinary environment variables");
+      return NextResponse.json({
+        error: "Server configuration error: Missing Cloudinary credentials. Please check Vercel environment variables."
+      }, { status: 500 });
+    }
+
     const formData = await request.formData()
     const file = formData.get("file") as File
     const type = formData.get("type") as string // "research", "resources", or undefined for events
@@ -32,7 +42,7 @@ export async function POST(request: NextRequest) {
         (error, result) => {
           if (error) {
             console.error("Cloudinary upload error:", error)
-            resolve(NextResponse.json({ error: "Upload failed" }, { status: 500 }))
+            resolve(NextResponse.json({ error: error.message || "Cloudinary upload failed" }, { status: 500 }))
           } else {
             resolve(NextResponse.json({ url: result?.secure_url }))
           }

@@ -5,7 +5,6 @@ export interface Event {
   date: string
   time: string | null
   location: string | null
-  chapter: "US" | "Bangladesh"
   category: string | null
   banner_image: string | null
   banner_position: string | null
@@ -31,7 +30,6 @@ export interface CreateEventData {
   date: string
   time?: string
   location?: string
-  chapter: "US" | "Bangladesh"
   status: "Upcoming" | "Past"
   category?: string
   banner_image?: string

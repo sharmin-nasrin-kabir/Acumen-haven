@@ -8,19 +8,18 @@ export default async function EventsPage() {
   const supabase = await createServerSupabaseClient()
 
   // Fetch settings and events in parallel to prevent waterfalls
-  const [settingsResult, usEventsResult, bangladeshEventsResult] = await Promise.all([
+  const [settingsResult, eventsResult] = await Promise.all([
     supabase
       .from("site_settings")
       .select("*")
       .in("key", ["events_page_bg", "events_page_title", "events_page_description"]),
-    supabase.from("events").select("*").eq("chapter", "US").order("date", { ascending: true }),
-    supabase.from("events").select("*").eq("chapter", "Bangladesh").order("date", { ascending: true })
+    supabase.from("events").select("*").order("date", { ascending: true })
   ])
 
   const settings = {
     events_page_bg: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop",
     events_page_title: "Our Events",
-    events_page_description: "Join us in our mission to create positive change through community engagement, education, and climate action across the US and Bangladesh."
+    events_page_description: "Join us in our mission to create positive change through community engagement, education, and climate action."
   }
 
   if (settingsResult.data) {
@@ -30,13 +29,11 @@ export default async function EventsPage() {
     })
   }
 
-  const usEvents = (usEventsResult.data || []) as Event[]
-  const bangladeshEvents = (bangladeshEventsResult.data || []) as Event[]
+  const events = (eventsResult.data || []) as Event[]
 
   return (
     <EventsClient
-      initialUsEvents={usEvents}
-      initialBangladeshEvents={bangladeshEvents}
+      initialEvents={events}
       settings={settings}
     />
   )

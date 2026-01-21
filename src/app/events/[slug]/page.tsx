@@ -123,11 +123,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                     {event.category || "Event"}
                   </Badge>
                 </div>
-                <div className="absolute top-6 right-6">
-                  <Badge variant="outline" className="bg-white/90">
-                    {event.chapter} Chapter
-                  </Badge>
-                </div>
+
               </div>
 
               {/* Event Details */}
@@ -231,10 +227,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                       <div>
                         <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Email</p>
                         <a
-                          href={`mailto:${event.contact_email || (event.chapter === "US" ? "us@acumenhaven.org" : "bangladesh@acumenhaven.org")}`}
+                          href={`mailto:${event.contact_email || "info@acumenhaven.org"}`}
                           className="text-slate-700 hover:text-emerald-600 font-medium transition-colors"
                         >
-                          {event.contact_email || (event.chapter === "US" ? "us@acumenhaven.org" : "bangladesh@acumenhaven.org")}
+                          {event.contact_email || "info@acumenhaven.org"}
                         </a>
                       </div>
                     </div>

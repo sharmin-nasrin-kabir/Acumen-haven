@@ -12,12 +12,7 @@ export async function GET(request: NextRequest) {
     console.log('📡 API: Fetching events...')
     let query = supabase.from("events").select("*").order("date", { ascending: true })
 
-    // Filter by chapter if specified
-    const chapter = searchParams.get("chapter")
-    if (chapter && (chapter === "US" || chapter === "Bangladesh")) {
-      console.log('🔍 Filtering by chapter:', chapter)
-      query = query.eq("chapter", chapter)
-    }
+
 
     // Filter by featured status if specified
     const featured = searchParams.get("featured")
@@ -61,14 +56,11 @@ export async function POST(request: NextRequest) {
     const body: CreateEventData = await request.json()
 
     // Validate required fields
-    if (!body.title || !body.date || !body.chapter || !body.status) {
-      return NextResponse.json({ error: "Missing required fields: title, date, chapter, status" }, { status: 400 })
+    if (!body.title || !body.date || !body.status) {
+      return NextResponse.json({ error: "Missing required fields: title, date, status" }, { status: 400 })
     }
 
-    // Validate chapter/status values
-    if (body.chapter !== "US" && body.chapter !== "Bangladesh") {
-      return NextResponse.json({ error: 'Chapter must be either "US" or "Bangladesh"' }, { status: 400 })
-    }
+
     if (body.status !== "Upcoming" && body.status !== "Past") {
       return NextResponse.json({ error: 'Status must be either "Upcoming" or "Past"' }, { status: 400 })
     }

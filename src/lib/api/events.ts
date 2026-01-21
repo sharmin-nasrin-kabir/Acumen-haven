@@ -6,13 +6,12 @@ const API_BASE = "/api/events"
 export const eventsApi = {
   // Get all events with optional filters
   async getAll(params?: {
-    chapter?: "US" | "Bangladesh"
     featured?: boolean
     limit?: number
   }): Promise<Event[]> {
     const searchParams = new URLSearchParams()
 
-    if (params?.chapter) searchParams.set("chapter", params.chapter)
+
     if (params?.featured) searchParams.set("featured", "true")
     if (params?.limit) searchParams.set("limit", params.limit.toString())
 

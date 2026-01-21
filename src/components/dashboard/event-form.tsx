@@ -24,7 +24,6 @@ interface Event {
   date: string
   time: string
   location: string
-  chapter?: string
   category?: string
   banner_image?: string
   gallery_images?: string[]
@@ -57,7 +56,6 @@ export function EventForm({ event }: EventFormProps) {
     date: event?.date || "",
     time: event?.time || "",
     location: event?.location || "",
-    chapter: event?.chapter || "",
     category: event?.category || "",
     banner_image: event?.banner_image || "",
     gallery_images: event?.gallery_images || [],
@@ -267,18 +265,7 @@ export function EventForm({ event }: EventFormProps) {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="chapter">Chapter *</Label>
-              <Select value={formData.chapter} onValueChange={(value) => handleInputChange("chapter", value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Chapter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="US">US</SelectItem>
-                  <SelectItem value="Bangladesh">Bangladesh</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -477,8 +464,8 @@ export function EventForm({ event }: EventFormProps) {
                 !formData.description ||
                 !formData.date ||
                 !formData.time ||
-                !formData.location ||
-                !formData.chapter
+                !formData.location
+
               }
               className="bg-un-400 hover:bg-un-400/90 text-white"
             >
@@ -495,8 +482,8 @@ export function EventForm({ event }: EventFormProps) {
                 !formData.description ||
                 !formData.date ||
                 !formData.time ||
-                !formData.location ||
-                !formData.chapter
+                !formData.location
+
               }
               className="bg-emerald-500 hover:bg-emerald-500/90 text-white"
             >

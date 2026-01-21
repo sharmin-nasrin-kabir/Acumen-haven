@@ -51,7 +51,6 @@ Date: ${new Date(event.date).toLocaleDateString("en-US", {
         })}
 Time: ${event.time || "TBD"}
 Location: ${event.location || "TBD"}
-Chapter: ${event.chapter}
 Category: ${event.category || "General"}
 
 DESCRIPTION:
