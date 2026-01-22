@@ -29,6 +29,7 @@ interface HomeClientProps {
   sdgs: any[]
   testimonials: any[]
   featuredEvents: Event[]
+  latestBlogs: any[]
 }
 
 export default function HomeClient({
@@ -36,7 +37,8 @@ export default function HomeClient({
   impactStats: dbImpactStats,
   sdgs: dbSdgs,
   testimonials: dbTestimonials,
-  featuredEvents
+  featuredEvents,
+  latestBlogs
 }: HomeClientProps) {
 
   // Use DB data if available, fallback to empty to avoid crashes (though server should provide)
@@ -79,6 +81,10 @@ export default function HomeClient({
   const DynamicIcon = ({ name, className }: { name: string, className?: string }) => {
     const Icon = (Icons as any)[name] || Icons.HelpCircle
     return <Icon className={className} />
+  }
+
+  const stripHtml = (html: string) => {
+    return html?.replace(/<[^>]*>/g, '') || ""
   }
 
   if (heroSlides.length === 0) return <div className="min-h-screen bg-white" />
@@ -210,6 +216,72 @@ export default function HomeClient({
           </div>
         </div>
       </section>
+
+      {/* Latest Stories Section - Added for functional parity */}
+      {latestBlogs.length > 0 && (
+        <section className="py-24 px-4 sm:px-6 bg-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-emerald-50/50 rounded-full blur-3xl -mr-20 -mt-20" />
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+              <div className="max-w-2xl">
+                <Badge className="bg-emerald-100 text-emerald-800 rounded-full font-bold px-5 py-2 mb-6 border border-emerald-200">
+                  Stories of Change
+                </Badge>
+                <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-[0.9]">
+                  Latest from <br />
+                  <span className="text-emerald-600">our blog</span>
+                </h2>
+                <p className="text-slate-500 text-lg mt-6 leading-relaxed">
+                  Insights, updates, and inspiring stories from our community members and program participants.
+                </p>
+              </div>
+              <Button asChild variant="outline" className="rounded-full h-14 px-8 border-2 font-bold group">
+                <Link href="/blog">
+                  View All Stories <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {latestBlogs.map((blog) => (
+                <Card key={blog.id} className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 rounded-[2.5rem] overflow-hidden bg-white">
+                  <div className="relative h-64">
+                    <Image
+                      src={blog.featured_image || "/placeholder.svg?height=400&width=600"}
+                      alt={blog.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      style={{ objectPosition: blog.banner_position || 'center center' }}
+                    />
+                    <div className="absolute top-6 left-6">
+                      <Badge className="bg-white/90 backdrop-blur-sm text-emerald-800 border-none shadow-lg">Blog Post</Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-8 space-y-4">
+                    <div className="flex items-center gap-3 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                      {new Date(blog.published_at || blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-900 leading-tight group-hover:text-emerald-600 transition-colors line-clamp-2">
+                      {blog.title}
+                    </h3>
+                    <p className="text-slate-600 line-clamp-3 leading-relaxed">
+                      {stripHtml(blog.excerpt || "")}
+                    </p>
+                    <div className="pt-4">
+                      <Link
+                        href={`/blog/${blog.slug || blog.id}`}
+                        className="inline-flex items-center font-bold text-emerald-600 group/link"
+                      >
+                        Read Story <ArrowRight className="ml-2 h-4 w-4 group-link-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SDG Alignment */}
       <section className="py-20 px-4 sm:px-6">

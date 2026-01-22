@@ -6,17 +6,29 @@ import { createClient } from "@/lib/supabase/server"
 export const revalidate = 60
 
 export default async function HomePage() {
-  const { heroSlides, impactStats, sdgs, testimonials } = await getSiteContent()
-
-  // Fetch featured events separately for now or add to getSiteContent
   const supabase = await createClient()
-  const { data: events } = await supabase
-    .from('events')
-    .select('*')
-    .eq('is_featured', true)
-    .eq('is_published', true)
-    .order('date', { ascending: false })
-    .limit(3)
+
+  // Fetch all required data in parallel to maximize performance
+  const [siteContent, eventsResult, blogsResult] = await Promise.all([
+    getSiteContent(),
+    supabase
+      .from('events')
+      .select('*')
+      .eq('is_featured', true)
+      .eq('is_published', true)
+      .order('date', { ascending: false })
+      .limit(3),
+    supabase
+      .from('blogs')
+      .select('id, title, excerpt, featured_image, slug, author_name, published_at, created_at, banner_position')
+      .eq('status', 'Published')
+      .order('published_at', { ascending: false })
+      .limit(3)
+  ])
+
+  const { heroSlides, impactStats, sdgs, testimonials } = siteContent
+  const events = eventsResult.data
+  const blogs = blogsResult.data
 
   return (
     <HomeClient
@@ -25,6 +37,7 @@ export default async function HomePage() {
       sdgs={sdgs}
       testimonials={testimonials}
       featuredEvents={events || []}
+      latestBlogs={blogs || []}
     />
   )
 }

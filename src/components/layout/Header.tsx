@@ -88,6 +88,8 @@ export default function Header() {
               src="/AH-Logo-Name.png"
               alt="Acumen Haven"
               width={160} height={36}
+              priority
+              loading="eager"
               className={cn("transition-all duration-500", isTransparent ? "brightness-0 invert w-32 md:w-40" : "brightness-100 invert-0 w-28 md:w-36")}
             />
           </Link>
@@ -121,7 +123,7 @@ export default function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="p-0 border-0 bg-white">
                 <div className="flex flex-col h-full">
-                  <div className="p-6 border-b"><Image src="/AH-Logo-Name.png" alt="Acumen Haven" width={160} height={36} /></div>
+                  <div className="p-6 border-b"><Image src="/AH-Logo-Name.png" alt="Acumen Haven" width={160} height={36} priority loading="eager" /></div>
                   <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
                     {mainNavItems.map((item) => (
                       <Link key={item.href} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className="flex items-center space-x-4 p-4 rounded-2xl hover:bg-emerald-50 text-slate-700 group transition-all">

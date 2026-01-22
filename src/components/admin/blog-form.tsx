@@ -18,13 +18,15 @@ import {
     Twitter,
     Instagram,
     Linkedin,
-    ArrowLeft
+    ArrowLeft,
+    Link as LinkIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
 import type { Blog } from "@/types/blog"
 import { BlogBlockEditor } from "./blog-editor-blocks"
+import { generateSlug } from "@/lib/utils/slug"
 
 interface BlogFormProps {
     initialData?: Blog
@@ -78,11 +80,18 @@ export function BlogForm({ initialData }: BlogFormProps) {
 
     const handleTitleChange = (e: any) => {
         const title = e.target.value
-        setFormData(prev => ({
-            ...prev,
-            title,
-            slug: prev.slug ? prev.slug : title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-        }))
+        setFormData(prev => {
+            const currentSlug = prev.slug || "";
+            const autoSlug = generateSlug(prev.title || "");
+            // Only auto-generate slug if it currently matches the generated slug from previous title
+            const shouldAutoUpdate = !currentSlug || currentSlug === autoSlug;
+
+            return {
+                ...prev,
+                title,
+                slug: shouldAutoUpdate ? generateSlug(title) : currentSlug
+            }
+        })
     }
 
     const handleInputChange = useCallback((field: keyof Blog, value: any) => {
@@ -124,20 +133,23 @@ export function BlogForm({ initialData }: BlogFormProps) {
         setLoading(true)
         const supabase = createClient()
         try {
-            const { id, created_at, updated_at, author_id, ...rawFormData } = formData as any;
-            void id; void created_at; void updated_at; void author_id;
-
-            const cleanPayload: any = {}
-            Object.keys(rawFormData).forEach(key => {
-                const val = rawFormData[key]
-                cleanPayload[key] = (typeof val === 'string' && val.trim() === '') ? null : val
-            })
-
-            const payload = {
-                ...cleanPayload,
+            const payload: any = {
                 updated_at: new Date().toISOString(),
                 published_at: formData.is_published && !initialData?.published_at ? new Date().toISOString() : initialData?.published_at
             }
+
+            // Map standard fields explicitly to ensure they are included correctly
+            const fieldsToSave = [
+                "title", "slug", "content", "excerpt", "featured_image", "banner_position",
+                "category", "author_name", "contact_email", "social_facebook",
+                "social_twitter", "social_instagram", "social_linkedin", "youtube_url",
+                "status", "is_published", "is_featured"
+            ]
+
+            fieldsToSave.forEach(field => {
+                const val = (formData as any)[field]
+                payload[field] = (typeof val === 'string' && val.trim() === '') ? null : (val ?? null)
+            })
 
             let error
             if (initialData?.id) {
@@ -218,10 +230,23 @@ export function BlogForm({ initialData }: BlogFormProps) {
                         <div className="space-y-2">
                             <Input
                                 id="title"
-                                value={formData.title}
+                                value={formData.title || ""}
                                 onChange={handleTitleChange}
                                 placeholder="Post Title"
                                 className="h-14 text-2xl font-bold border-transparent px-0 placeholder:text-gray-300 focus-visible:ring-0 focus-visible:border-gray-200 rounded-none border-b transition-all"
+                            />
+                        </div>
+
+                        <div className="space-y-4 pt-2">
+                            <div className="flex items-center gap-2 text-gray-400 group-within:text-emerald-600 transition-colors">
+                                <LinkIcon className="h-4 w-4" />
+                                <span className="text-xs font-bold uppercase tracking-widest">URL Slug</span>
+                            </div>
+                            <Input
+                                value={formData.slug || ""}
+                                onChange={(e) => handleInputChange("slug", generateSlug(e.target.value))}
+                                placeholder="url-slug-example"
+                                className="h-10 bg-gray-50/50 border-gray-200 rounded-xl text-sm font-medium focus:bg-white transition-all"
                             />
                         </div>
 
@@ -238,7 +263,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
                         <Label htmlFor="excerpt" className="text-sm font-semibold text-gray-700">Summary / Excerpt</Label>
                         <textarea
                             id="excerpt"
-                            value={formData.excerpt}
+                            value={formData.excerpt || ""}
                             onChange={(e) => handleInputChange("excerpt", e.target.value)}
                             placeholder="Write a brief summary showing on blog cards..."
                             className="w-full min-h-[100px] p-3 text-sm border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 transition-all resize-y placeholder:text-gray-400"
@@ -272,10 +297,10 @@ export function BlogForm({ initialData }: BlogFormProps) {
                                             </div>
 
                                             {/* Focal Point Indicator */}
-                                            <div className="absolute w-4 h-4 border-2 border-white rounded-full bg-black/30 shadow-sm pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
+                                            <div className="absolute w-4 h-4 border-2 border-white rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(0,0,0,0.5)] pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-20"
                                                 style={{
-                                                    left: formData.banner_position?.split(' ')[0] || '50%',
-                                                    top: formData.banner_position?.split(' ')[1] || '50%',
+                                                    left: formData.banner_position?.includes('%') ? formData.banner_position.split(' ')[0] : '50%',
+                                                    top: formData.banner_position?.includes('%') ? formData.banner_position.split(' ')[1] : '50%',
                                                 }}
                                             />
 
@@ -287,7 +312,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
                                                     const x = ((e.clientX - rect.left) / rect.width) * 100;
                                                     const y = ((e.clientY - rect.top) / rect.height) * 100;
                                                     handleInputChange("banner_position", `${Math.round(x)}% ${Math.round(y)}%`);
-                                                    toast.success("Focal point updated");
+                                                    toast.info("Focal point selected - save to apply");
                                                 }}
                                             />
 
@@ -394,7 +419,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
                                     <div>
                                         <Label className="text-xs text-gray-500 mb-1.5 block">Author</Label>
                                         <Input
-                                            value={formData.author_name}
+                                            value={formData.author_name || ""}
                                             onChange={(e) => handleInputChange("author_name", e.target.value)}
                                             placeholder="Author Name"
                                             className="h-9"
@@ -403,7 +428,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
                                     <div>
                                         <Label className="text-xs text-gray-500 mb-1.5 block">Category</Label>
                                         <Input
-                                            value={formData.category}
+                                            value={formData.category || ""}
                                             onChange={(e) => handleInputChange("category", e.target.value)}
                                             placeholder="Category"
                                             className="h-9"
@@ -423,7 +448,7 @@ export function BlogForm({ initialData }: BlogFormProps) {
                             <div>
                                 <Label className="text-xs text-gray-500 mb-1.5 block">Contact Email</Label>
                                 <Input
-                                    value={formData.contact_email}
+                                    value={formData.contact_email || ""}
                                     onChange={(e) => handleInputChange("contact_email", e.target.value)}
                                     placeholder="Email"
                                     className="h-9"
@@ -432,19 +457,19 @@ export function BlogForm({ initialData }: BlogFormProps) {
                             <div className="space-y-3 pt-2">
                                 <div className="relative">
                                     <Facebook className="absolute left-3 top-2.5 h-3.5 w-3.5 text-gray-400" />
-                                    <Input value={formData.social_facebook} onChange={(e) => handleInputChange("social_facebook", e.target.value)} placeholder="Facebook URL" className="pl-9 h-9 text-xs" />
+                                    <Input value={formData.social_facebook || ""} onChange={(e) => handleInputChange("social_facebook", e.target.value)} placeholder="Facebook URL" className="pl-9 h-9 text-xs" />
                                 </div>
                                 <div className="relative">
                                     <Twitter className="absolute left-3 top-2.5 h-3.5 w-3.5 text-gray-400" />
-                                    <Input value={formData.social_twitter} onChange={(e) => handleInputChange("social_twitter", e.target.value)} placeholder="Twitter URL" className="pl-9 h-9 text-xs" />
+                                    <Input value={formData.social_twitter || ""} onChange={(e) => handleInputChange("social_twitter", e.target.value)} placeholder="Twitter URL" className="pl-9 h-9 text-xs" />
                                 </div>
                                 <div className="relative">
                                     <Instagram className="absolute left-3 top-2.5 h-3.5 w-3.5 text-gray-400" />
-                                    <Input value={formData.social_instagram} onChange={(e) => handleInputChange("social_instagram", e.target.value)} placeholder="Instagram URL" className="pl-9 h-9 text-xs" />
+                                    <Input value={formData.social_instagram || ""} onChange={(e) => handleInputChange("social_instagram", e.target.value)} placeholder="Instagram URL" className="pl-9 h-9 text-xs" />
                                 </div>
                                 <div className="relative">
                                     <Linkedin className="absolute left-3 top-2.5 h-3.5 w-3.5 text-gray-400" />
-                                    <Input value={formData.social_linkedin} onChange={(e) => handleInputChange("social_linkedin", e.target.value)} placeholder="LinkedIn URL" className="pl-9 h-9 text-xs" />
+                                    <Input value={formData.social_linkedin || ""} onChange={(e) => handleInputChange("social_linkedin", e.target.value)} placeholder="LinkedIn URL" className="pl-9 h-9 text-xs" />
                                 </div>
                             </div>
                         </div>

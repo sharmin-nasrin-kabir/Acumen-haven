@@ -88,10 +88,11 @@ export default function BlogsAdminPage() {
         }
     }
 
-    const filteredBlogs = blogs.filter(blog =>
-        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.author_name?.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    const filteredBlogs = blogs.filter(blog => {
+        const titleMatch = (blog.title || "").toLowerCase().includes(searchQuery.toLowerCase())
+        const authorMatch = (blog.author_name || "").toLowerCase().includes(searchQuery.toLowerCase())
+        return titleMatch || authorMatch
+    })
 
     if (loading) {
         return (
@@ -136,6 +137,7 @@ export default function BlogsAdminPage() {
                                 alt={blog.title}
                                 fill
                                 className="object-cover"
+                                style={{ objectPosition: blog.banner_position || 'center center' }}
                             />
                             <div className="absolute top-4 left-4 flex gap-2">
                                 <Badge className={blog.is_published ? "bg-emerald-500" : "bg-slate-400"}>
