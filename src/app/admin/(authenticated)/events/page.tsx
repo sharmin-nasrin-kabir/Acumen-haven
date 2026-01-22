@@ -46,6 +46,7 @@ export default function EventsAdminPage() {
         events_page_title: "Our Events",
         events_page_description: "Join us in our mission to create positive change through community engagement, education, and climate action."
     })
+    const [initialSettings, setInitialSettings] = useState<any>(null)
 
     const supabase = createClient()
 
@@ -74,6 +75,7 @@ export default function EventsAdminPage() {
                     fetchedSettings[item.key] = item.value
                 })
                 setSettings(fetchedSettings)
+                setInitialSettings(fetchedSettings)
             }
         } catch (err: any) {
             console.error("Error fetching settings:", err.message)
@@ -150,6 +152,7 @@ export default function EventsAdminPage() {
             if (error) throw error
 
             toast.success("Page settings updated successfully!")
+            setInitialSettings({ ...settings })
         } catch (err: any) {
             toast.error(err.message)
         } finally {
@@ -190,6 +193,12 @@ export default function EventsAdminPage() {
             toast.error(err.message)
         }
     }
+
+    const settingsChanged = initialSettings ? (
+        settings.events_page_bg !== initialSettings.events_page_bg ||
+        settings.events_page_title !== initialSettings.events_page_title ||
+        settings.events_page_description !== initialSettings.events_page_description
+    ) : false;
 
     const filteredEvents = events.filter(event => {
         return event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -260,8 +269,11 @@ export default function EventsAdminPage() {
 
                             <Button
                                 onClick={handleSaveSettings}
-                                disabled={savingSettings}
-                                className="w-full bg-slate-900 hover:bg-slate-800 text-white h-12 rounded-xl font-bold transition-all shadow-lg"
+                                disabled={savingSettings || !settingsChanged}
+                                className={`w-full h-12 rounded-xl font-bold transition-all shadow-lg ${savingSettings || !settingsChanged
+                                    ? "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none border border-slate-200"
+                                    : "bg-slate-900 hover:bg-slate-800 text-white"
+                                    }`}
                             >
                                 {savingSettings ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                                 Update Identity Settings

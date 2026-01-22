@@ -21,12 +21,7 @@ export default async function BlogPage() {
       status,
       published_at,
       created_at,
-      updated_at,
-      profiles (
-        first_name,
-        last_name,
-        email
-      )
+      author_name
     `)
     .eq("status", "approved")
     .order("published_at", { ascending: false })
@@ -151,12 +146,7 @@ export default async function BlogPage() {
                         <div className="flex items-center space-x-1">
                           <User className="h-4 w-4" />
                           <span>
-                            {(() => {
-                              const profile = Array.isArray(publishedBlogs[0].profiles)
-                                ? publishedBlogs[0].profiles[0]
-                                : publishedBlogs[0].profiles;
-                              return profile ? `${profile.first_name || ""} ${profile.last_name || ""}` : "Community Member";
-                            })()}
+                            {publishedBlogs[0].author_name || "Community Member"}
                           </span>
                         </div>
                       </div>
@@ -210,12 +200,7 @@ export default async function BlogPage() {
                           <div className="flex items-center space-x-2 text-xs text-slate-500">
                             <User className="h-3 w-3" />
                             <span>
-                              {(() => {
-                                const profile = Array.isArray(post.profiles)
-                                  ? post.profiles[0]
-                                  : post.profiles;
-                                return profile ? `${profile.first_name || ""} ${profile.last_name || ""}` : "Community Member";
-                              })()}
+                              {post.author_name || "Community Member"}
                             </span>
                           </div>
                         </div>

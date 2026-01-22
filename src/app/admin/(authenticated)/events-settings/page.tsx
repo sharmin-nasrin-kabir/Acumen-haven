@@ -22,6 +22,7 @@ export default function EventsAdminSettingsPage() {
         events_page_title: "Our Events",
         events_page_description: "Join us in our mission to create positive change through community engagement, education, and climate action across the US and Bangladesh."
     })
+    const [initialSettings, setInitialSettings] = useState<any>(null)
 
     const fetchSettings = useCallback(async () => {
         try {
@@ -37,6 +38,7 @@ export default function EventsAdminSettingsPage() {
                 fetchedSettings[item.key] = item.value
             })
             setSettings(fetchedSettings)
+            setInitialSettings(fetchedSettings)
         } catch (err: any) {
             setError(err.message)
         } finally {
@@ -102,6 +104,7 @@ export default function EventsAdminSettingsPage() {
             if (error) throw error
 
             setSuccess("Settings updated successfully!")
+            setInitialSettings({ ...settings })
             setTimeout(() => setSuccess(null), 3000)
         } catch (err: any) {
             setError(err.message)
@@ -109,6 +112,12 @@ export default function EventsAdminSettingsPage() {
             setSaving(false)
         }
     }
+
+    const settingsChanged = initialSettings ? (
+        settings.events_page_bg !== initialSettings.events_page_bg ||
+        settings.events_page_title !== initialSettings.events_page_title ||
+        settings.events_page_description !== initialSettings.events_page_description
+    ) : false;
 
     if (loading) {
         return (
@@ -127,8 +136,11 @@ export default function EventsAdminSettingsPage() {
                 </div>
                 <Button
                     onClick={handleSave}
-                    disabled={saving}
-                    className="bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/20 px-8 rounded-xl"
+                    disabled={saving || !settingsChanged}
+                    className={`px-8 rounded-xl shadow-lg ${saving || !settingsChanged
+                        ? "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none border border-slate-200"
+                        : "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20"
+                        }`}
                 >
                     {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                     Save Changes

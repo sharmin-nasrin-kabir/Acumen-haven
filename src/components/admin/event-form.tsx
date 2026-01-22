@@ -61,6 +61,35 @@ export function EventForm({ initialData }: EventFormProps) {
         ...initialData
     })
 
+    const isChanged = (() => {
+        if (!initialData) return true; // Always allow saving new events
+
+        const fields: (keyof Event)[] = [
+            "title", "description", "date", "time", "location", "category",
+            "banner_image", "gallery_images", "registration_link", "youtube_url",
+            "slug", "is_published", "is_featured", "status", "contact_email",
+            "social_facebook", "social_twitter", "social_instagram", "social_linkedin",
+            "banner_position"
+        ];
+
+        return fields.some(field => {
+            const currentVal = formData[field];
+            const initialVal = initialData[field];
+
+            if (Array.isArray(currentVal) || Array.isArray(initialVal)) {
+                return JSON.stringify(currentVal) !== JSON.stringify(initialVal);
+            }
+
+            const normalize = (val: any) => (val === null || val === undefined) ? "" : val;
+
+            if (typeof currentVal === 'boolean' || typeof initialVal === 'boolean') {
+                return !!currentVal !== !!initialVal;
+            }
+
+            return normalize(currentVal) !== normalize(initialVal);
+        });
+    })();
+
 
     const handleTitleChange = (e: any) => {
         const title = e.target.value
@@ -223,8 +252,11 @@ export function EventForm({ initialData }: EventFormProps) {
                 <div className="flex gap-3">
                     <Button
                         type="submit"
-                        disabled={loading || uploading}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-200 h-11 px-6 min-w-[140px] transition-all active:scale-95"
+                        disabled={loading || uploading || (initialData && !isChanged)}
+                        className={`h-11 px-6 min-w-[140px] transition-all active:scale-95 shadow-lg ${loading || uploading || (initialData && !isChanged)
+                                ? "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none border border-slate-200"
+                                : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200"
+                            }`}
                     >
                         {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                         {initialData ? "Update Event" : "Save Event"}
