@@ -46,7 +46,9 @@ const adminNavigation = [
   { name: "Impact Stats", href: "/admin/impact", icon: TrendingUp },
   { name: "SDG Goals", href: "/admin/sdgs", icon: Target },
   { name: "Voices of Change", href: "/admin/testimonials", icon: MessageCircle },
+  { name: "About Us", href: "/admin/about", icon: Target },
   { name: "Settings", href: "/admin/settings", icon: Settings },
+
 ]
 
 interface SidebarContentProps {

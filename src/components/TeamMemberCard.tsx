@@ -5,6 +5,7 @@ import { Mail, Linkedin, Twitter } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import { motion } from "motion/react"
+import { User, CircleUser } from "lucide-react"
 
 interface TeamMember {
   name: string
@@ -13,6 +14,7 @@ interface TeamMember {
   initials: string
   bgColor: string
   image: string
+  gender?: 'male' | 'female' | 'other'
   email: string
   linkedin: string
   twitter: string
@@ -49,7 +51,7 @@ export default function TeamMemberCard({ member, variant = "default" }: TeamMemb
 
               {/* Image Frame */}
               <div className="absolute inset-0 bg-white rounded-[2.2rem] shadow-inner overflow-hidden border-4 border-white z-20 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-2">
-                {!imageError ? (
+                {!imageError && member.image && member.image !== "default:male" && member.image !== "default:female" ? (
                   <Image
                     src={member.image}
                     alt={`${member.name}`}
@@ -59,7 +61,13 @@ export default function TeamMemberCard({ member, variant = "default" }: TeamMemb
                   />
                 ) : (
                   <div className={`w-full h-full ${member.bgColor} flex items-center justify-center`}>
-                    <span className="text-5xl font-black text-white">{member.initials}</span>
+                    {member.image === "default:male" || member.gender === 'male' ? (
+                      <User className="h-20 w-20 text-white/90" />
+                    ) : member.image === "default:female" || member.gender === 'female' ? (
+                      <CircleUser className="h-20 w-20 text-white/90" />
+                    ) : (
+                      <span className="text-5xl font-black text-white">{member.initials}</span>
+                    )}
                   </div>
                 )}
               </div>
@@ -124,7 +132,7 @@ export default function TeamMemberCard({ member, variant = "default" }: TeamMemb
         <div className="relative mx-auto w-40 h-40 mb-6">
           <div className="absolute inset-0 bg-slate-100 rounded-2xl group-hover:rotate-6 transition-transform duration-500"></div>
           <div className="absolute inset-0 bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100 group-hover:-rotate-3 transition-transform duration-500">
-            {!imageError ? (
+            {!imageError && member.image && member.image !== "default:male" && member.image !== "default:female" ? (
               <Image
                 src={member.image}
                 alt={`${member.name} profile picture`}
@@ -135,7 +143,13 @@ export default function TeamMemberCard({ member, variant = "default" }: TeamMemb
               />
             ) : (
               <div className={`w-full h-full ${member.bgColor} flex items-center justify-center`}>
-                <span className="text-4xl font-bold text-white tracking-tighter">{member.initials}</span>
+                {member.image === "default:male" || member.gender === 'male' ? (
+                  <User className="h-16 w-16 text-white/90" />
+                ) : member.image === "default:female" || member.gender === 'female' ? (
+                  <CircleUser className="h-16 w-16 text-white/90" />
+                ) : (
+                  <span className="text-4xl font-bold text-white tracking-tighter">{member.initials}</span>
+                )}
               </div>
             )}
           </div>
