@@ -425,7 +425,7 @@ export default function HomeClient({
               <Link href="/get-involved">Get Started <ArrowRight className="ml-3 h-7 w-7 group-hover:translate-x-2 transition-transform" /></Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white/20 bg-white/5 hover:bg-white/10 text-white px-12 h-16 sm:h-20 rounded-full font-bold text-2xl backdrop-blur-md transition-all hover:scale-105 active:scale-95" asChild>
-              <Link href="/about">Read Our Story</Link>
+              <Link href="/blog">Read Our Story</Link>
             </Button>
           </div>
 
